@@ -1,0 +1,17 @@
+.employee-utilities {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  
+    .search {
+      width: 400px;
+      margin: 40px;
+      margin-right: 200px;
+    }
+  }
+  .employee-table-container {
+    overflow: hidden;
+    z-index: 0;
+    max-width: 1300px;
+  }
+  

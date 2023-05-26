@@ -1,0 +1,178 @@
+.container {
+    max-width: 1200px;
+}
+
+.title {
+    margin-bottom: 20px;
+    font-size: 20px;
+    color: var(--text-color);
+}
+.image_user {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.icon_edit_img {
+   margin-left: -10px;
+   margin-top: 80px;
+}
+.info {
+    display: flex;
+
+}
+
+.nav {
+    width: 20%;
+    max-height: 130px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin-right: 20px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.nav label {
+    margin-bottom: 10px;
+}
+
+.nav_info_user,
+.nav_key_user {
+    display: flex;
+    margin-bottom: 10px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.icon {
+    margin-right: 5px;
+}
+
+.form_info{
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    padding: 20px 30px;
+    display: none;
+    width: 50%;
+}
+.username{
+    display: flex;
+    flex-direction: column;
+}
+.username label{
+    font-size: 16px; 
+    min-width: 100px;
+}
+
+.username input {
+    margin-top: 5px;
+    border: 1px solid #777;
+    padding: 5px 10px;
+    width: 60%;
+    border-radius: 5px;
+}
+
+.gender {
+    margin-top: 10px;
+}
+.gender_radio {
+    margin-top: 5px;
+    display: flex;
+}
+
+.gender_female {
+    margin-left: 16px;
+}
+
+.birthday {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.birthday input {
+    margin-top: 5px;
+    border: 1px solid #777;
+    padding: 5px 10px;
+    width: 60%;
+    border-radius: 5px;
+}
+
+.number_phone {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.number_phone input {
+    margin-top: 5px;
+    border: 1px solid #777;
+    padding: 5px 10px;
+    width: 60%;
+    border-radius: 5px;
+}
+.email {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.email input {
+    margin-top: 5px;
+    border: 1px solid #777;
+    padding: 5px 10px;
+    width: 60%;
+    border-radius: 5px;
+}
+
+.button {
+    margin-top: 20px;
+}
+
+.btn_edit {
+    min-width: 90px;
+    background-color: var(--hover-color);
+    height: 36px;
+    color: white;
+    border-radius: 6px;
+    margin-right: 10px;
+}
+.btn_edit:hover {
+    background-color: var(--primary-color);
+}
+.btn_reset {
+    min-width: 90px;
+    background-color: #888;
+    height: 36px;
+    color: black;
+    border-radius: 6px;
+    margin-right: 10px;
+}
+
+.btn_reset:hover {
+    background-color: #666;
+}
+
+
+.form_password {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    padding: 20px 30px;
+    width: 50%;
+}
+
+.old_password ,
+.new_password {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.old_password input,
+.new_password input {
+    margin-top: 5px;
+    border: 1px solid #777;
+    padding: 4px 10px;
+    width: 60%;
+    border-radius: 5px;
+}
+.btn .btn-primary{
+
+}

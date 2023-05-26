@@ -1,0 +1,38 @@
+.container {
+    max-width: 1200px;
+
+}
+
+tbody tr th {
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.total-book {
+    display: flex;
+    float: right;
+    margin-top: 10px;
+}
+
+.total-price  label {
+    font-weight: 600;
+    color: var(--highlight-color);
+    margin-right: 10px;
+}
+
+.total-price {
+    margin-right: 10px;
+    margin-top: 8px;
+}
+
+.book-service button{
+    font-weight: 600;
+    color: #ffff;
+    background-color: var(--primary-color);
+    padding: 6px 14px;
+
+}
+
+.book-service button:hover {
+    background-color: var(--hover-color);
+}

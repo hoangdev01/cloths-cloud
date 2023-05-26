@@ -1,0 +1,71 @@
+.tour-utilities {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  .btn-add-tour {
+    width: 200px !important;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+    box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+    border-radius: 10px;
+    height: 70px;
+    margin: 20px;
+    cursor: pointer;
+    color: green;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.3s ease-in-out;
+
+    .left,
+    .right {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .right {
+      width: 180px;
+      text-align: center;
+      line-height: 50px;
+    }
+    .counter {
+      font-size: 20px;
+      font-weight: 400;
+    }
+
+    .percentage {
+      // display: flex;
+      align-items: center;
+      font-style: 14px;
+
+      &.positive {
+        color: green;
+      }
+      &.negative {
+        color: red;
+      }
+    }
+
+    .icon {
+      font-size: 18px;
+      padding: 5px;
+      border-radius: 5px;
+      align-self: flex-end;
+    }
+  }
+  .btn-add-tour:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
+  .search {
+    width: 400px;
+    margin: 40px;
+    margin-right: 200px;
+  }
+}
+.tour-table-container {
+  overflow: hidden;
+  z-index: 0;
+  max-width: 1300px;
+}

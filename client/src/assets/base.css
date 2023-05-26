@@ -1,0 +1,25 @@
+@font-face {
+    font-family: 'Reey-Regular';
+    /* font-style: normal;
+    font-weight: normal; */
+    src: url('./fonts/Reey-Regular.otf');
+    /* src: local('Tangerine'), url('http://example.com/tangerine.ttf') format('truetype');  */
+  }
+ 
+  .fontReey {
+    font-family: 'Reey-Regular', serif;
+    font-size: 32px;
+  }
+
+  :root {
+    --primary-color: #006E7F;
+    --highlight-color: #e8604c;
+    --text-color: #2C394B;
+    --lightText-color: #787780;
+    --hover-color: #3BACB6;
+    --background-color: #CEE5D0;
+    --button-color: #79B4B7;
+    --gray-color: #EDFFEC;
+    
+  
+  }

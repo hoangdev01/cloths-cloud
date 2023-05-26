@@ -1,0 +1,86 @@
+.form_order {
+    padding: 20px;
+}
+
+
+p {
+    
+    font-size: 16px;
+    font-weight: 400;
+
+}
+
+.title_input {
+    min-width: 150px ;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.input_time input {
+    border: 1px solid #777;
+    width: 380px;
+    padding: 7px;
+    border-radius: 8px;
+}
+
+
+.input_amount_child input ,
+.input_amount_adults input {
+    width: 60px;
+    text-align: center;
+    border: 1px solid #777;
+    margin: auto 10px;
+    border-radius: 4px;
+    padding: 2px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+
+}
+
+.input_amount_price {
+    display: flex;
+}
+
+.input_amount_price input {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.button_cancel {
+    background-color: white;
+    padding: 10px;
+    border: 1px solid #888;
+    color: #666;
+    min-width: 100px;
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+.button_cancel :hover {
+    background-color: #666;
+    color: aliceblue;
+}
+
+.button_buy {
+    background-color: var(--highlight-color);
+    padding: 10px;
+    min-width: 100px;
+    color: white;
+}
+
+.button_buy :hover {
+    background-color: "var(--hover-color)";
+}
+
+
+
+@keyframes showModal {
+    from {
+        opacity: 0;
+    } 
+    to {
+        opacity: 1;
+    }
+}
