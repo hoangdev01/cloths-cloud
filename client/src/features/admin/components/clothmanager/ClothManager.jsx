@@ -1,5 +1,5 @@
 import React from 'react';
-import './tourmanager.scss';
+import './clothmanager.scss';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import serviceApi from '../../../../api/serviceApi';
@@ -10,19 +10,18 @@ import moment from 'moment';
 import UploadBox from '../../../../components/upload-box/upload-box';
 const { Search } = Input;
 
-const TourManager = () => {
+const ClothManager = () => {
   const entryModal = {
     name: '',
     title: '',
     description: '',
-    guide: '',
     price: '',
     is_active: '',
   };
   const [successStatus, setSuccessStatus] = useState('');
   const [categoryId, setCategoryId] = useState([]);
-  const [listTour, setListTour] = useState([]);
-  const [listTourAll, setListTourAll] = useState([]);
+  const [listCloth, setListCloth] = useState([]);
+  const [listClothAll, setListClothAll] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [isModalAddVisible, setIsModalAddVisible] = useState(false);
   const [isModalImageVisible, setIsModalImageVisible] = useState(false);
@@ -30,14 +29,14 @@ const TourManager = () => {
   const [isModalDeleteVisible, setIsModalDeleteVisible] = useState(false);
   const [modelCurrentAction, setModelCurrentAction] = useState(false);
   const [actionChange, setActionChange] = useState(true);
-  const { name, title, description, guide, price, is_active } =
+  const { name, title, description, price, is_active } =
     modelCurrentAction;
   useEffect(() => {
     serviceApi
-      .getTourList()
+      .getServiceList("cloth")
       .then(response => {
-        setListTourAll(response.data.tourList);
-        setListTour(response.data.tourList);
+        setListClothAll(response.data.clothList);
+        setListCloth(response.data.clothList);
         setCategoryId(response.data.categoryId);
       })
       .catch(error => {
@@ -130,7 +129,7 @@ const TourManager = () => {
   const handleDeleteCancel = () => setIsModalDeleteVisible(false);
 
   const searchClick = () => {
-    const filteredData = listTourAll.filter(
+    const filteredData = listClothAll.filter(
       entry =>
         entry.id.toString().toLowerCase().includes(searchValue.toLowerCase()) ||
         entry.name
@@ -139,7 +138,7 @@ const TourManager = () => {
           .includes(searchValue.toLowerCase()) ||
         entry.price.toString().toLowerCase() == searchValue.toLowerCase()
     );
-    setListTour(filteredData);
+    setListCloth(filteredData);
   };
   const searchChange = event => setSearchValue(event.target.value);
   const onchangeModelCurrentAction = event => {
@@ -180,12 +179,6 @@ const TourManager = () => {
       dataIndex: 'price',
       sorter: (a, b) => a.price - b.price,
       width: 120,
-    },
-    {
-      title: 'Guide',
-      dataIndex: 'guide',
-      width: 1000,
-      sorter: (a, b) => a.description.length - b.description.length,
     },
     {
       title: 'Is active',
@@ -253,7 +246,7 @@ const TourManager = () => {
   return (
     <>
       <Modal
-        title="Add new tour"
+        title="Add new cloth"
         visible={isModalAddVisible}
         onOk={handleAddOk}
         onCancel={handleAddCancel}
@@ -295,17 +288,6 @@ const TourManager = () => {
           ></textarea>
         </div>
 
-        <div class="form-group">
-          <label for="Title">Guide: </label>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Enter address"
-            value={guide}
-            name="guide"
-            onChange={onchangeModelCurrentAction}
-          ></input>
-        </div>
         <div class="form-group">
           <label for="name">Price: </label>
           <input
@@ -380,17 +362,6 @@ const TourManager = () => {
             onChange={onchangeModelCurrentAction}
           ></textarea>
         </div>
-        <div class="form-group">
-          <label for="Title">Address: </label>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Enter address"
-            value={guide}
-            name="guide"
-            onChange={onchangeModelCurrentAction}
-          ></input>
-        </div>
 
         <div class="form-group">
           <label for="name">Price: </label>
@@ -427,8 +398,8 @@ const TourManager = () => {
       >
         <p>ARE YOU SURE TO DELETE "{modelCurrentAction.name}"</p>
       </Modal>
-      <div className="tour-utilities">
-        <div className="btn-add-tour" onClick={showAddModal}>
+      <div className="cloth-utilities">
+        <div className="btn-add-cloth" onClick={showAddModal}>
           <div className="left">
             <div className="percentage positive">
               <AddCircleIcon />
@@ -455,18 +426,18 @@ const TourManager = () => {
           onChange={searchChange}
         />
       </div>
-      <div className="tour-table-container">
+      <div className="cloth-table-container">
         <Table
-          className="tour-table"
+          className="cloth-table"
           scroll={{
             x: 1200,
           }}
           columns={columns}
-          dataSource={listTour}
+          dataSource={listCloth}
         />
       </div>
     </>
   );
 };
 
-export default TourManager;
+export default ClothManager;

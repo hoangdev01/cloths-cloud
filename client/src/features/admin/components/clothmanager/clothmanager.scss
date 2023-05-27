@@ -1,9 +1,9 @@
-.hotel-utilities {
+.cloth-utilities {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
 
-  .btn-add-hotel {
+  .btn-add-cloth {
     width: 200px !important;
     display: flex;
     justify-content: space-between;
@@ -55,7 +55,7 @@
       align-self: flex-end;
     }
   }
-  .btn-add-hotel:hover {
+  .btn-add-cloth:hover {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   }
   .search {
@@ -64,8 +64,7 @@
     margin-right: 200px;
   }
 }
-
-.hotel-table-container {
+.cloth-table-container {
   overflow: hidden;
   z-index: 0;
   max-width: 1300px;

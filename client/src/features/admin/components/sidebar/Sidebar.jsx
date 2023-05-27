@@ -49,22 +49,10 @@ const Sidebar = () => {
             </li>
           </Link>
           <p className="title">SERVICES</p>
-          <Link href="/admin/tour">
+          <Link href="/admin/cloth">
             <li>
               <HealthAndSafetyIcon className="icon" />
-              <span>Tour</span>
-            </li>
-          </Link>
-          <Link href="/admin/hotel">
-            <li>
-              <PsychologyIcon className="icon" />
-              <span>Hotel</span>
-            </li>
-          </Link>
-          <Link href="/admin/car">
-            <li>
-              <SettingsIcon className="icon" />
-              <span>Car</span>
+              <span>Cloth</span>
             </li>
           </Link>
           <p className="title">Event</p>

@@ -8,16 +8,20 @@ import {
   StackDivider,
   Text,
   VStack,
+  Fade,
+  useOutsideClick,
+  Button
 } from '@chakra-ui/react';
 import FBChat from '../social/FbChat';
 import { Link } from 'react-router-dom';
 
-import redbull from '../../assets/redbull.png';
+import logo from '../../assets/logo.png';
 
 import { BsSearch } from 'react-icons/bs';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { FaRegUser } from 'react-icons/fa';
 import { AuthContext } from '../../contexts/AuthContext';
+
 
 // const MenuBar = ['Tour', 'Contact', 'About'];
 
@@ -31,6 +35,7 @@ const MenuBar = [
 const Header = () => {
   const [showMenu, setShowMenu] = useState(0);
   const [optionUser, setOptionUser] = useState(false);
+  const ref = React.useRef()
 
   const {
     authState: { authLoading, isAuthenticated },
@@ -40,9 +45,19 @@ const Header = () => {
     window.scrollY >= 70 ? setShowMenu(true) : setShowMenu(false);
   };
 
+  useOutsideClick({
+    ref: ref,
+    handler: () => setOptionUser(false),
+  })
+
   useEffect(() => {
     window.addEventListener('scroll', ScrollShowMenu);
   });
+
+  function handleClick(event) {
+    event.preventDefault();
+  }
+  
 
   return (
     <Container maxW={'full'} centerContent p={0} position={'relative'}>
@@ -66,7 +81,7 @@ const Header = () => {
           boxShadow={showMenu ? '0 10px 50px 0 rgb(46 56 220 / 20%)' : 'unset'}
           transition={'all 0.3s ease'}
           zIndex={999}
-          background={'DeepSkyBlue'}
+          background={'midnightblue'}
         >
           <Box
             maxW={'1200px'}
@@ -87,7 +102,7 @@ const Header = () => {
                 <Link to={'/'}>
                   <Box
                     // style={{ backgroundImage: `url(${logo})` }}
-                    style={{ backgroundImage: `url(${redbull})` }}
+                    style={{ backgroundImage: `url(${logo})` }}
                     // h={'38px'}
                     // w={'165px'}
                     h={'75px'}
@@ -115,12 +130,16 @@ const Header = () => {
                     >
                       <Box
                         transition={'all 0.2s ease-in-out'}
-                        px={'10px'}
-                        py={'20px'}
+                        px={'20px'}
+                        py={'10px'}
                         key={index}
                         cursor={'pointer'}
-                        _hover={{ color: 'black' }}
-                        color={showMenu ? 'black' : 'white'}
+                        _hover={{
+                          color: 'midnightblue',
+                          backgroundColor: 'white'
+                        }}
+                        rounded={'15px'}
+                        color={'white'}
                       >
                         {menu.name}
                       </Box>
@@ -143,7 +162,7 @@ const Header = () => {
                         h={'50px'}
                         pr={'50px'}
                         border={'1px'}
-                        rounded={'none'}
+                        rounded={'10px'}
                         mt={'0px !important'}
                         mb={'0px !important'}
                         placeholder={'Search here...'}
@@ -152,7 +171,6 @@ const Header = () => {
                         _placeholder={{
                           color: '#5C727D',
                         }}
-                        _focus={{ borderColor: '#0a9a7a', border: '1px' }}
                       />
                       <Box
                         color={'#071c1f'}
@@ -174,17 +192,23 @@ const Header = () => {
                     h={'50px'}
                     w={'50px'}
                     mr={'10px'}
-                    transition={'all 0.3s linear'}
+                    transition={
+                      'all .2s cubic-bezier(.5,0,0,1.25),opacity .15s ease-out'
+                    }
                     cursor={'pointer'}
                     display={'flex'}
                     alignItems={'center'}
                     justifyContent={'center'}
+                    rounded={'10px'}
                     _hover={{
                       color: 'white',
                       backgroundColor: 'var(--hover-color)',
                     }}
                     onClick={() => setOptionUser(!optionUser)}
+                    ref={ref}
                   >
+
+                  <Fade in={optionUser}>
                     <Box
                       position={'absolute'}
                       right={'0px'}
@@ -195,47 +219,57 @@ const Header = () => {
                       fontSize={'16px'}
                       color={'#5C727D'}
                       top={optionUser ? '102%' : '115%'}
-                      // transition={'all 0.5s ease'}
-                      opacity={optionUser ? '1' : '0'}
+                      transition={'all 1s linear'}
+                      // opacity={optionUser ? '1' : '0'}
                       display={optionUser ? 'block' : 'none'}
+                      rounded={'10px'}
+                      shadow='md'
+                      userSelect="none"
                     >
                       <Link
                         to="/sign-in"
                         style={{
                           display: !isAuthenticated ? 'block' : 'none',
                         }}
+                        userSelect="none"
+                        onMouseDown={handleClick}
                       >
                         <Box px={'15px'} py={'7px'}>
                           <Text
                             _hover={{
-                              color: 'var(--hover-color)',
+                              color: 'var(--hover-color)'
                             }}
                           >
                             Sign in
                           </Text>
                         </Box>
                       </Link>
+                      <Button>
                       <Link
                         to="/sign-up"
                         style={{
                           display: !isAuthenticated ? 'block' : 'none',
                         }}
+                        userSelect="none"
                       >
                         <Box px={'15px'} py={'7px'}>
                           <Text
                             _hover={{
                               color: 'var(--hover-color)',
                             }}
+                            userSelect="none"
                           >
                             Register
                           </Text>
                         </Box>{' '}
                       </Link>
+                      </Button>
                       <Link
                         to="/profile"
                         style={{
                           display: isAuthenticated ? 'block' : 'none',
                         }}
+                        userSelect="none"
                       >
                         <Box px={'15px'} py={'7px'}>
                           <Text
@@ -265,9 +299,13 @@ const Header = () => {
                         </Box>
                       </Link>
                     </Box>
-                    <FaRegUser size={20} />
+                  </Fade>
+                  <FaRegUser size={20} />
                   </Box>
-                  <Link to="/cart">
+                  <Link to="/cart"
+                    style={{
+                      display: isAuthenticated ? 'block' : 'none',
+                    }}>
                     <Box
                       shadow={'0 16px 32px 0 rgba(7, 28, 31, 0.1)'}
                       bgColor={'white'}
@@ -280,6 +318,7 @@ const Header = () => {
                       display={'flex'}
                       alignItems={'center'}
                       justifyContent={'center'}
+                      rounded={'10px'}
                       _hover={{
                         color: 'white',
                         backgroundColor: 'var(--hover-color)',

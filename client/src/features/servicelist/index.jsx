@@ -32,12 +32,12 @@ import {
     const [select, setSelect] = useState(0);
   
     return (
-      <Container maxW={'1200px'} pt={'120px'} pb={'90px'}>
+      <Container maxW={'100%'} pt={'20px'} pb={'90px'}>
         <Box w={'full'} display={'flex'}>
           {/* left */}
-          <Box px={'15px'} maxW={'33.3333%'} width={"full"}>
+          <Box px={'15px'} maxW={'30%'} width={"full"}>
             <Box rounded={'15px'} px={'20px'} py={'42px'} bgColor={'#edf2f7'}>
-              <Text fontWeight={'700'} fontSize={'20px'} mb={'22px'} color={"var(--primary-color)"}>
+              <Text fontWeight={'700'} fontSize={'20px'} mb={'22px'} color={"midnightblue"}>
                 Search Service
               </Text>
               <FormControl as="fieldset">
@@ -124,7 +124,7 @@ import {
                     })}
                   </Box>
                 </Box>
-                <Button h={'64px'} w={'100%'} bgColor={'#006E7F'} color={'#fff'}>
+                <Button h={'64px'} w={'100%'} bgColor={'midnightblue'} color={'#fff'}>
                   SEARCH
                 </Button>
               </FormControl>
@@ -146,7 +146,7 @@ import {
                     mb={'24px'}
                     borderBottom={'1px solid #CBD5E0'}
                   >
-                    <Text fontWeight={'600'} fontSize={'20px'} pb={'5px'} color={"var(--primary-color)"}>
+                    <Text fontWeight={'600'} fontSize={'20px'} pb={'5px'} color={"midnightblue"}>
                       Price
                     </Text>
                     <RiArrowDropDownLine
@@ -174,7 +174,7 @@ import {
                     mb={'24px'}
                     borderBottom={'1px solid #CBD5E0'}
                   >
-                    <Text fontWeight={'600'} fontSize={'20px'} pb={'5px'} color={"var(--primary-color)"}>
+                    <Text fontWeight={'600'} fontSize={'20px'} pb={'5px'} color={"midnightblue"}>
                       Categories
                     </Text>
                     <RiArrowDropDownLine
@@ -187,11 +187,11 @@ import {
   
                   <Box px={'0px'} display={optionCategory ? 'block' : 'none'}>
                     <Stack spacing={5} display={'flex'} flexDir={'column'}>
-                      {/* <Checkbox>City Tours</Checkbox>
+                      <Checkbox>City Tours</Checkbox>
                       <Checkbox marginLeft={'0px'}>HostedTour</Checkbox>
                       <Checkbox>Adventure Tours</Checkbox>
                       <Checkbox>Group Tours</Checkbox>
-                      <Checkbox>Couple Tours</Checkbox> */}
+                      <Checkbox>Couple Tours</Checkbox>
                     </Stack>
                   </Box>
                 </Box>
@@ -203,7 +203,7 @@ import {
                     mb={'24px'}
                     borderBottom={'1px solid #CBD5E0'}
                   >
-                    <Text fontWeight={'600'} fontSize={'20px'} pb={'5px'} color={"var(--primary-color)"}>
+                    <Text fontWeight={'600'} fontSize={'20px'} pb={'5px'} color={"midnightblue"}>
                       Duration
                     </Text>
                     <RiArrowDropDownLine

@@ -52,23 +52,13 @@ function App() {
         </Routes>
         <Routes>
           <Route
-            path="/admin/tour"
+            path="/admin/cloth"
             exact
-            element={<Admin adminRoute="tour" />}
-          />
-        </Routes>
-        <Routes>
-          <Route
-            path="/admin/hotel"
-            exact
-            element={<Admin adminRoute="hotel" />}
+            element={<Admin adminRoute="cloth" />}
           />
         </Routes>
         <Routes>
           <Route path="/admin" exact element={<Admin adminRoute="" />} />
-        </Routes>
-        <Routes>
-          <Route path="/admin/car" exact element={<Admin adminRoute="car" />} />
         </Routes>
         <Routes>
           <Route
