@@ -29,8 +29,11 @@ const ServiceDetail = () => {
   const [name, setName] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [guide, setGuide] = useState('');
+  // const [guide, setGuide] = useState('');
   const [price, setPrice] = useState();
+  const [color, setColor] = useState();
+  
+
   let [numChild, setNumChild] = useState(0);
   let [numAdults, setNumAdults] = useState(0);
 
@@ -84,7 +87,8 @@ const ServiceDetail = () => {
         setPrice(service.price);
         setDescription(service.description);
         setTitle(service.title);
-        setGuide(service.guide);
+        // setGuide(service.guide);
+        console.log(service);
       })
       .catch(err => {
         console.log(err);
@@ -147,10 +151,10 @@ const ServiceDetail = () => {
         </Text>
         <Box>{/** Description */}</Box>
         <Text fontWeight={'600'} mt={'20px'} color={'var(--text-color)'}>
-          LỊCH TRÌNH BAO GỒM
+          Thông tin chi tiết
         </Text>
         <List mt={'20px'}>
-          {guide.split('-').map((gui, index) => (
+          {description.split('-').map((gui, index) => (
             <ListItem key={index}>{gui}</ListItem>
           ))}
         </List>
@@ -162,7 +166,7 @@ const ServiceDetail = () => {
             fontSize={'18px'}
           >
             {
-              //  price.toLocaleString('vi', {style : 'currency', currency : 'VND'})
+              // price.toLocaleString('vi', { style: 'currency', currency: 'VND' })
               (price + 0).toLocaleString('vi', {
                 style: 'currency',
                 currency: 'VND',
@@ -178,9 +182,10 @@ const ServiceDetail = () => {
           mt={'16px'}
           textAlign={'center'}
           bgColor="var(--button-color)"
-          color={'blackAlpha.900'}
+          color={'white'}
           fontWeight={'600'}
           cursor={'pointer'}
+          rounded={'10px'}
           _hover={{
             backgroundColor: 'var(--hover-color)',
           }}

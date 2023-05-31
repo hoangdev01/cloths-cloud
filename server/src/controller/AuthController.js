@@ -105,7 +105,7 @@ module.exports = {
         subject: "Account activation Link",
         html: `
         <h2>Please click on given link to active your account</h2>
-        <p>${process.env.CLIENT_URL}/verify-token/${token}</p>
+        <a href="${process.env.CLIENT_URL}/verify-token/${token}">link</a>
       `,
       };
 

@@ -30,13 +30,15 @@ module.exports = {
   },
   showServiceList: async (req, res) => {
     try {
-      service_code = req.params.service_code
+      service_code = req.params.service_code;
       const serviceList = await Service.findAll({
         where: { "$category.name$": service_code },
         order: [["createdAt", "DESC"]],
         include: [{ model: Category, attributes: ["name"] }, { model: Image }],
       });
-      const category = await Category.findOne({ where: { name: req.params.service_code } });
+      const category = await Category.findOne({
+        where: { name: req.params.service_code },
+      });
       if (!serviceList)
         return res.json({ success: false, message: "Tour not found" });
       return res.json({ success: true, serviceList, categoryId: category.id });
@@ -133,8 +135,7 @@ module.exports = {
     }
   },
   create: async (req, res) => {
-    const { name, title, description, guide, price, is_active, categoryId } =
-      req.body;
+    const { name, title, description, price, is_active, categoryId } = req.body;
 
     try {
       if (!name)
@@ -151,7 +152,6 @@ module.exports = {
         name,
         title: title || "",
         description: description || "",
-        guide: guide || "",
         price: price || 0,
         is_active: is_active || true,
         categoryId,
@@ -171,16 +171,8 @@ module.exports = {
     }
   },
   update: async (req, res) => {
-    const {
-      id,
-      name,
-      title,
-      description,
-      guide,
-      price,
-      is_active,
-      categoryId,
-    } = req.body;
+    const { id, name, title, description, price, is_active, categoryId } =
+      req.body;
 
     try {
       if (!id)
@@ -195,7 +187,6 @@ module.exports = {
           name: name || oldService.name,
           title: title || oldService.title,
           description: description || oldService.description,
-          guide: guide || oldService.guide,
           price: price || oldService.price,
           is_active: is_active || oldService.is_active,
           categoryId: categoryId || oldService.categoryId,

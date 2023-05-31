@@ -99,7 +99,7 @@ const Footer = () => {
                         </List>
                     </Box>
                     <Box w={"25%"}>
-                        <Text fontWeight={"700"} fontSize={"20px"} color={"var(--text-color)"}>VỀ REDBULL</Text>
+                        <Text fontWeight={"700"} fontSize={"20px"} color={"var(--text-color)"}>VỀ cloths cloud</Text>
                     
                         <List spacing={4} mt={"20px"}>
                             {footerAboutLinks.map((item, index) => (

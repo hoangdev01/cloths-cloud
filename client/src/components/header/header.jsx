@@ -9,8 +9,7 @@ import {
   Text,
   VStack,
   Fade,
-  useOutsideClick,
-  Button
+  useOutsideClick
 } from '@chakra-ui/react';
 import FBChat from '../social/FbChat';
 import { Link } from 'react-router-dom';
@@ -33,6 +32,8 @@ const MenuBar = [
 ];
 
 const Header = () => {
+  const isAdminUrl = window.location.pathname.startsWith('/admin');
+
   const [showMenu, setShowMenu] = useState(0);
   const [optionUser, setOptionUser] = useState(false);
   const ref = React.useRef()
@@ -60,7 +61,13 @@ const Header = () => {
   
 
   return (
-    <Container maxW={'full'} centerContent p={0} position={'relative'}>
+    <Container
+      maxW={'full'}
+      centerContent
+      p={0}
+      position={'relative'}
+      display={isAdminUrl?"none":"block"}
+    >
       <VStack
         divider={<StackDivider borderColor="gray.300" />}
         w={'full'}
@@ -206,6 +213,7 @@ const Header = () => {
                     }}
                     onClick={() => setOptionUser(!optionUser)}
                     ref={ref}
+                    onMouseDown={handleClick}
                   >
 
                   <Fade in={optionUser}>
@@ -232,7 +240,6 @@ const Header = () => {
                           display: !isAuthenticated ? 'block' : 'none',
                         }}
                         userSelect="none"
-                        onMouseDown={handleClick}
                       >
                         <Box px={'15px'} py={'7px'}>
                           <Text
@@ -244,7 +251,6 @@ const Header = () => {
                           </Text>
                         </Box>
                       </Link>
-                      <Button>
                       <Link
                         to="/sign-up"
                         style={{
@@ -263,7 +269,6 @@ const Header = () => {
                           </Text>
                         </Box>{' '}
                       </Link>
-                      </Button>
                       <Link
                         to="/profile"
                         style={{

@@ -18,6 +18,22 @@ const serviceAPI = {
     const requestUrl = url + `/service/get-service-list/${service_code}`;
     return axiosClient.get(requestUrl);
   },
+  getListServiceInstance: id => {
+    const requestUrl = url + `/service/${id}/instance`;
+    return axiosClient.get(requestUrl);
+  },
+  createServiceInstance: (id, params) => {
+    const requestUrl = url + `/service/${id}/instance`;
+    return axiosClient.post(requestUrl, params);
+  },
+  updateServiceInstance: (id, credentials) => {
+    const requestUrl = url + `/service/${id}/instance`;
+    return axiosClient.put(requestUrl, credentials);
+  },
+  deleteServiceInstance: id => {
+    const requestUrl = url + `/service/${id}/instance`;
+    return axiosClient.delete(requestUrl);
+  },
   create: params => {
     const requestUrl = url + `/service/`;
     return axiosClient.post(requestUrl, params);

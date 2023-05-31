@@ -15,6 +15,7 @@ module.exports = {
   ServiceEvents: require("./ServiceEvents"),
   User: require("./User"),
   Category: require("./Category"),
+  Instance: require("./Instance"),
   Association: require("./Association"),
   Slugify: require("./Slugify"),
 };

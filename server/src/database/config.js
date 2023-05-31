@@ -7,6 +7,7 @@ const sequelize = new Sequelize(
     dialect: "mysql",
     host: process.env.DB_URL,
     logging: false,
+    charset: "utf8mb4",
   }
 );
 

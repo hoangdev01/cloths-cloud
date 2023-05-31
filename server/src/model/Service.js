@@ -26,10 +26,6 @@ const Service = sequelize.define(
       type: Sequelize.TEXT,
       allowNull: true,
     },
-    guide: {
-      type: Sequelize.TEXT,
-      allowNull: true,
-    },
     price: {
       type: Sequelize.DOUBLE,
       allowNull: true,
