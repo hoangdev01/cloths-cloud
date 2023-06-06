@@ -1,82 +1,118 @@
-import { fontSize } from '@mui/system';
-import React, { useEffect } from 'react';
-import { useState } from 'react';
+import {
+  Box,
+  Flex,
+  Heading,
+  HStack,
+  Link,
+  Stack,
+  useColorModeValue as mode,
+} from '@chakra-ui/react';
+import { CartItem } from './cartItem';
+import { CartOrderSummary } from './cartOrderSummary';
+// import { cartData } from './_data.ts';
+import React, { useEffect, useState, useContext } from 'react';
 import CartApi from '../../api/cartApi';
-import style from './style_cart.css';
 
 const Carts = () => {
-  const [cart, setCart] = useState([]);
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState([]);
+  const [listCartId, setListCartId] = useState([]);
+  const [cartData, setCartData] = useState([]);
 
-  useEffect(() => {
-    CartApi.getAll().then(res => {
-      setCart(res.data.listCart);
+  const transformCartData = resData => {
+    if (!resData || !resData.success || !resData.listCart) {
+      return [resData.success];
+    }
+
+    return resData.listCart.map((item, index) => {
+      const { instance, amount, instanceId, id: cartId } = item;
+      const { service } = instance;
+
+      const id = (index + 1).toString();
+      const price = service?.price * amount;
+      const currency = 'USD';
+      const name = service?.name ?? null;
+      const description = service?.title ?? null;
+      const quantity = amount;
+      const imageUrl =
+        service?.images.find(image => image.is_avatar)?.path ?? null;
+      const slug = service?.slug;
+      const instanceAmount = instance?.amount;
+      const color = instance?.color;
+      const size = instance?.size;
+      return {
+        id,
+        price,
+        currency,
+        name,
+        description,
+        quantity,
+        imageUrl,
+        slug,
+        instanceAmount,
+        color,
+        size,
+        instanceId,
+        cartId,
+      };
     });
-  }, []);
-  console.log(cart);
-
-  const totalPrice = cart.reduce(
-    (prePrice, item) =>
-      prePrice +
-      (item.service.price * item.numberOfChild) / 2 +
-      item.service.price * (item.numberOfPeople - item.numberOfChild),
-    0
-  );
-
-  const ShowNotiFy = () => {
-    alert(
-      'Bạn đã đặt dịch vụ thành công \nHệ thống sẽ liên hệ với bạn ngay bây giờ.'
-    );
   };
 
+  const setData = () => {
+    CartApi.getAll().then(res => {
+      const listCardData = transformCartData(res.data);
+      setCartData(listCardData);
+      setTotal(
+        listCardData.reduce((acc, item) => {
+          return acc + item.price;
+        }, 0)
+      );
+      setListCartId(res.data.listCart.map(item => item.id));
+    });
+  };
+
+  useEffect(() => {
+    setData();
+  }, []);
+
   return (
-    <div className="container">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>TÊN DỊCH VỤ</th>
-            <th>SỐ LƯỢNG</th>
-            <th>GIÁ TIỀN</th>
-          </tr>
-        </thead>
-        <tbody>
-          {cart.map((item, index) => (
-            <tr key={index}>
-              <th>{item.service.name}</th>
-              {item.numberOfPeople == 0 ? (
-                <th>Số lượng: {item.amount}</th>
-              ) : (
-                <th>
-                  Số lượng trẻ em: {item.numberOfChild} <br />
-                  Số lượng người lớn: {item.numberOfPeople - item.numberOfChild}
-                </th>
-              )}
-              <th>
-                {(item.numberOfChild * item.service.price) / 2 +
-                  (item.numberOfPeople - item.numberOfChild) *
-                    item.service.price.toLocaleString('vi', {
-                      style: 'currency',
-                      currency: 'VND',
-                    })}
-              </th>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <div className="total-book">
-        <div className="total-price">
-          <label>TỔNG TIỀN: </label>
-          {totalPrice +
-            (0).toLocaleString('vi', {
-              style: 'currency',
-              currency: 'VND',
-            })}
-        </div>
-        <div className="book-service">
-          <button onClick={ShowNotiFy}>Đặt ngay</button>
-        </div>
-      </div>
-    </div>
+    <Box
+      maxW={{ base: '3xl', lg: '7xl' }}
+      mx="auto"
+      px={{ base: '4', md: '8', lg: '12' }}
+      py={{ base: '6', md: '8', lg: '12' }}
+    >
+      <Stack
+        direction={{ base: 'column', lg: 'row' }}
+        align={{ lg: 'flex-start' }}
+        spacing={{ base: '8', md: '16' }}
+      >
+        <Stack spacing={{ base: '8', md: '10' }} flex="2">
+          <Heading fontSize="2xl" fontWeight="extrabold">
+            Shopping Cart ({cartData.length} items)
+          </Heading>
+
+          <Stack spacing="6">
+            {cartData.map(item => (
+              <CartItem key={item.id} {...item} setData={setData} />
+            ))}
+          </Stack>
+        </Stack>
+
+        <Flex direction="column" align="center" flex="1">
+          <CartOrderSummary
+            total={total}
+            listCartId={listCartId}
+            setData={setData}
+          />
+          <HStack mt="6" fontWeight="semibold">
+            <p>or</p>
+            <Link href="/" color={mode('blue.500', 'blue.200')}>
+              Continue shopping
+            </Link>
+          </HStack>
+        </Flex>
+      </Stack>
+    </Box>
   );
 };
 

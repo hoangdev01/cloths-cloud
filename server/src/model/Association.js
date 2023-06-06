@@ -28,15 +28,15 @@ User.hasMany(Bill, { foreignKey: "userId", sourceKey: "id" });
 
 //@BillDetail
 BillDetail.belongsTo(Bill, { foreignKey: "billId", targetKey: "id" });
-BillDetail.belongsTo(Service, { foreignKey: "serviceId", targetKey: "id" });
+BillDetail.belongsTo(Instance, { foreignKey: "instanceId", targetKey: "id" });
 Bill.hasMany(BillDetail, { foreignKey: "billId", sourceKey: "id" });
-Service.hasMany(BillDetail, { foreignKey: "serviceId", sourceKey: "id" });
+Instance.hasMany(BillDetail, { foreignKey: "instanceId", sourceKey: "id" });
 
 //@Cart
 Cart.belongsTo(User, { foreignKey: "userId", targetKey: "id" });
-Cart.belongsTo(Service, { foreignKey: "serviceId", targetKey: "id" });
+Cart.belongsTo(Instance, { foreignKey: "instanceId", targetKey: "id" });
 User.hasMany(Cart, { foreignKey: "userId", sourceKey: "id" });
-Service.hasMany(Cart, { foreignKey: "serviceId", sourceKey: "id" });
+Instance.hasMany(Cart, { foreignKey: "instanceId", sourceKey: "id" });
 
 //@Image
 Image.belongsTo(Service, { foreignKey: "serviceId", targetKey: "id" });

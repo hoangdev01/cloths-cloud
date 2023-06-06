@@ -1,240 +1,181 @@
 import {
-    Box,
-    FormControl,
-    Input,
-    Text,
-    Select,
-    Button,
-    Container,
-    RadioGroup,
-    Stack,
-    Radio,
-    Divider,
-    Checkbox,
-    Image,
-  } from '@chakra-ui/react';
-  import React, { useState } from 'react';
-  import { RiArrowDropDownLine } from 'react-icons/ri';
-  import Services from './services';
+  Box,
+  Text,
+  Container,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  Spinner,
+  IconButton,
+  Icon,
+  Flex,
+  Tooltip,
+} from '@chakra-ui/react';
+import React, { useEffect, useState, useRef } from 'react';
+import Services from './services';
+import { InboxOutlined } from '@ant-design/icons';
+import { message, Upload } from 'antd';
+import { ai_url, url } from './../../api/constants';
+import serviceAPI from '../../api/serviceApi';
+import { truncate } from 'lodash';
+import { RepeatIcon } from '@chakra-ui/icons';
 
+const { Dragger } = Upload;
 
-  
-  const OPTION_SECLECT = ['Adventure', 'Wildlife', 'Sightseeing'];
-  
-  function ServiceList(props) {
-    const [value, setValue] = useState('1');
-    const [optionPrice, setOptionPrice] = useState(false);
-    const [optionCategory, setOptionCategory] = useState(false);
-    const [optionDuration, setOptionDuration] = useState(false);
-  
-    const [showSort, setShowSort] = useState(false);
-  
-    const [select, setSelect] = useState(0);
-  
-    return (
-      <Container maxW={'100%'} pt={'20px'} pb={'90px'}>
-        <Box w={'full'} display={'flex'}>
-          {/* left */}
-          <Box px={'15px'} maxW={'30%'} width={"full"}>
-            <Box rounded={'15px'} px={'20px'} py={'42px'} bgColor={'#edf2f7'}>
-              <Text fontWeight={'700'} fontSize={'20px'} mb={'22px'} color={"midnightblue"}>
+function ServiceList(props) {
+  const [list, setList] = useState([]);
+  const [categoryId, setCategoryId] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRotating, setIsRotating] = useState(false);
+  const [isClicked, setIsClicked] = useState(1);
+  const draggerRef = useRef(null);
+
+  const handleClick = () => {
+    setIsRotating(true);
+    setIsClicked(isClicked + 1);
+    serviceAPI.getServiceList('cloth').then(res => {
+      const list = res.data.serviceList;
+      setList(res.data.serviceList);
+      setCategoryId(res.data.categoryId);
+    });
+
+    setTimeout(() => {
+      setIsRotating(false);
+    }, 500);
+  };
+
+  useEffect(() => {
+    serviceAPI.getServiceList('cloth').then(res => {
+      const list = res.data.serviceList;
+      setList(res.data.serviceList);
+      setCategoryId(res.data.categoryId);
+    });
+  }, []);
+
+  const draggerProps = {
+    name: 'file',
+    multiple: false, // Chỉnh multiple thành false để chuyển sang single upload
+    action: `${ai_url}/recommend`,
+    showUploadList: false,
+    method: 'post',
+    onChange(info) {
+      setIsLoading(true);
+      // Xử lý logic khi upload
+      const { status } = info.file;
+      if (status !== 'uploading') {
+        console.log('abc');
+      }
+      if (status === 'done') {
+        if (info.file.response.success) {
+          serviceAPI
+            .getRecommendService({
+              listRecommendImg: info.file.response.listRecommendImg,
+              categoryId: categoryId,
+            })
+            .then(res => {
+              if (res.data.success) {
+                setList(res.data.serviceList);
+                setIsLoading(false);
+              }
+            });
+        } else {
+          message.error(`${info.file.response.message}`);
+        }
+      } else if (status === 'error') {
+        setIsLoading(false);
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+    onDrop(e) {
+      setIsLoading(true);
+      console.log('Dropped files', e.dataTransfer.files);
+    },
+  };
+
+  return (
+    <Container maxW={'100%'} pt={'20px'} pb={'90px'}>
+      <Box w={'full'} display={'flex'}>
+        {/* left */}
+        <Box px={'15px'} maxW={'30%'} width={'full'}>
+          <Box rounded={'15px'} px={'20px'} py={'42px'} bgColor={'#edf2f7'}>
+            <Flex align="center">
+              <Text
+                fontWeight={'700'}
+                fontSize={'20px'}
+                mb={'22px'}
+                color={'midnightblue'}
+                w={'90%'}
+              >
                 Search Service
               </Text>
-              <FormControl as="fieldset">
-                <Input
-                  h={'64px'}
-                  bgColor={'#fff'}
-                  border={'unset'}
-                  id="place"
-                  type="text"
-                  placeholder="Where to"
-                  px={'16px'}
-                  mb={'10px'}
+              <Tooltip
+                label="Reset Filter"
+                aria-label="Reset Button"
+                placement="left"
+                _hover={{
+                  background: 'transparent',
+                }}
+              >
+                <IconButton
+                  onClick={handleClick}
+                  icon={
+                    <RepeatIcon
+                      title="Reset"
+                      transform={
+                        isRotating
+                          ? `rotate(${0 - isClicked * 180}deg)`
+                          : `rotate(${0 - isClicked * 180}deg)`
+                      }
+                      transition="transform 0.2s ease-in-out"
+                      boxSize={6}
+                      _focusVisible={{
+                        outline: 'none',
+                        'box-shadow': 'none',
+                      }}
+                      _hover={{
+                        backgroundColor: 'transparent',
+                      }}
+                      _active={{
+                        backgroundColor: 'transparent',
+                      }}
+                    />
+                  }
+                  marginBottom={'20px'}
+                  aria-label="Rotate Arrow"
                 />
-                <Input
-                  h={'64px'}
-                  bgColor={'#fff'}
-                  border={'unset'}
-                  id="time"
-                  type="text"
-                  placeholder="When"
-                  px={'16px'}
-                  mb={'10px'}
-                />
-                <Box
-                  bgColor="white"
-                  h={'64px'}
-                  minW={'210px'}
-                  mb={'10px'}
-                  position={'relative'}
-                  fontSize={'16px'}
-                  pl={'18px'}
-                  pr={'30px'}
-                  cursor={'pointer'}
-                  display={'flex'}
-                  alignItems={'center'}
-                  _after={{
-                    content: '""',
-                    position: 'absolute',
-                    display: 'block',
-                    height: '5px',
-                    width: '5px',
-                    marginTop: '-4px',
-                    top: '50%',
-                    right: '12px',
-                    borderBottom: '2px solid #999',
-                    borderRight: '2px solid #999',
-                    transformOrigin: '66% 66%',
-                    transform: `rotate(${showSort ? '-135' : '45'}deg)`,
-                    transition: 'all .15s ease-in-out',
-                  }}
-                  onClick={() => setShowSort(!showSort)}
-                >
-                  <Text color={'#1a202c'}>{OPTION_SECLECT[select]}</Text>
-                  <Box
-                    position={'absolute'}
-                    top={'110%'}
-                    rounded={'sm'}
-                    left={'0px'}
-                    bgColor={'white'}
-                    opacity={showSort ? '1' : '0'}
-                    w={'full'}
-                    boxShadow={'0 0 0 1px rgb(68 68 68 / 11%)'}
-                    zIndex={9}
-                    transition={
-                      'all .2s cubic-bezier(.5,0,0,1.25),opacity .15s ease-out'
-                    }
-                    userSelect={'none'}
-                    fontSize={'16px'}
-                  >
-                    {OPTION_SECLECT.map((opt, index) => {
-                      return (
-                        <Box
-                          key={index}
-                          fontSize={'16px'}
-                          py={'10px'}
-                          pl={'10px'}
-                          pr={'5px'}
-                          _hover={{ bgColor: '#f6f6f6' }}
-                          onClick={() => setSelect(index)}
-                        >
-                          {opt}
-                        </Box>
-                      );
-                    })}
-                  </Box>
-                </Box>
-                <Button h={'64px'} w={'100%'} bgColor={'midnightblue'} color={'#fff'}>
-                  SEARCH
-                </Button>
-              </FormControl>
-            </Box>
-            <Box
-              border={'1px solid #ebe6de'}
-
-              
-              rounded={'15px'}
-              px={'50px'}
-              py={'42px'}
-              mt={'30px'}
-            >
-              <FormControl as="fieldset">
-                <Box mb={'30px'}>
-                  <Box
-                    display={'flex'}
-                    justifyContent={'space-between'}
-                    mb={'24px'}
-                    borderBottom={'1px solid #CBD5E0'}
-                  >
-                    <Text fontWeight={'600'} fontSize={'20px'} pb={'5px'} color={"midnightblue"}>
-                      Price
-                    </Text>
-                    <RiArrowDropDownLine
-                      onClick={() => {
-                        setOptionPrice(!optionPrice);
-                      }}
-                      size={'26'}
-                    />
-                  </Box>
-  
-                  <Box px={'0px'} display={optionPrice ? 'block' : 'none'}>
-                    <RadioGroup onChange={setValue} value={value}>
-                      <Stack direction="row">
-                        <Radio value="1">Ascending</Radio>
-                        <Radio value="2">Descending</Radio>
-                      </Stack>
-                    </RadioGroup>
-                  </Box>
-                </Box>
-  
-                <Box mb={'30px'}>
-                  <Box
-                    display={'flex'}
-                    justifyContent={'space-between'}
-                    mb={'24px'}
-                    borderBottom={'1px solid #CBD5E0'}
-                  >
-                    <Text fontWeight={'600'} fontSize={'20px'} pb={'5px'} color={"midnightblue"}>
-                      Categories
-                    </Text>
-                    <RiArrowDropDownLine
-                      onClick={() => {
-                        setOptionCategory(!optionCategory);
-                      }}
-                      size={'26'}
-                    />
-                  </Box>
-  
-                  <Box px={'0px'} display={optionCategory ? 'block' : 'none'}>
-                    <Stack spacing={5} display={'flex'} flexDir={'column'}>
-                      <Checkbox>City Tours</Checkbox>
-                      <Checkbox marginLeft={'0px'}>HostedTour</Checkbox>
-                      <Checkbox>Adventure Tours</Checkbox>
-                      <Checkbox>Group Tours</Checkbox>
-                      <Checkbox>Couple Tours</Checkbox>
-                    </Stack>
-                  </Box>
-                </Box>
-  
-                <Box mb={'30px'}>
-                  <Box
-                    display={'flex'}
-                    justifyContent={'space-between'}
-                    mb={'24px'}
-                    borderBottom={'1px solid #CBD5E0'}
-                  >
-                    <Text fontWeight={'600'} fontSize={'20px'} pb={'5px'} color={"midnightblue"}>
-                      Duration
-                    </Text>
-                    <RiArrowDropDownLine
-                      onClick={() => {
-                        setOptionDuration(!optionDuration);
-                      }}
-                      size={'26'}
-                    />
-                  </Box>
-  
-                  <Box px={'0px'} display={optionDuration ? 'block' : 'none'}>
-                    <Stack spacing={5} display={'flex'} flexDir={'column'}>
-                      <Checkbox pb={'20px'}>0 - 24 hours</Checkbox>
-                      <Checkbox pb={'20px'}>1 - 2 days</Checkbox>
-                      <Checkbox pb={'20px'}>2 - 3 days</Checkbox>
-                      <Checkbox pb={'20px'}>4 - 5 days</Checkbox>
-                      <Checkbox pb={'20px'}>5 - 10 days</Checkbox>
-                    </Stack>
-                  </Box>
-                </Box>
-              </FormControl>
-            </Box>
-          </Box>
-  
-          <Box maxW={'66.66666%'} w={"full"}>
-              <Services />         
+              </Tooltip>
+            </Flex>
+            <Dragger {...draggerProps} ref={draggerRef}>
+              <p className="ant-upload-drag-icon">
+                <InboxOutlined />
+              </p>
+              <p className="ant-upload-text">
+                Click or drag file to this area to upload a suggesting image
+              </p>
+              <p className="ant-upload-hint">
+                Support to search for products by suggested images uploaded
+              </p>
+            </Dragger>
           </Box>
         </Box>
-      </Container>
-    );
-  }
-  
-  export default ServiceList;
-  
+
+        <Box maxW={'66.66666%'} w={'full'}>
+          {isLoading ? (
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="blue.500"
+              size="xl"
+              marginLeft={'30px'}
+            />
+          ) : (
+            <Services list={list} />
+          )}
+        </Box>
+      </Box>
+    </Container>
+  );
+}
+
+export default ServiceList;

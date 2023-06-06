@@ -1,37 +1,47 @@
 .slider {
-    position: relative;
-    /* height: 100vh; */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: relative;
+  /* height: 100vh; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.image-container {
+  display: flex;
+  justify-content: center; /* Đặt hình ảnh vào giữa theo chiều ngang */
+  align-items: center; /* Đặt hình ảnh vào giữa theo chiều dọc */
+  height: 100%; /* Đảm bảo container chiếm đầy đủ chiều cao của slide */
 }
 
 .image {
-    width: 1200px;
-    height: 500px;
-   
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover; /* Hiển thị hình ảnh mà không bị méo mó */
 }
 
+/* .image {
+  width: 1200px;
+  height: 500px;
+} */
+
 .right-arrow {
-    position: absolute;
-    top: 50%;
-    right: -5%;
-    font-size: 3rem;
-    color: var(--button-color);
-    z-index: 0;
-    cursor: pointer;
-    user-select: none;
+  position: absolute;
+  top: 50%;
+  right: -5%;
+  font-size: 3rem;
+  color: var(--button-color);
+  z-index: 0;
+  cursor: pointer;
+  user-select: none;
 }
 
 .left-arrow {
-    position: absolute;
-    top: 50%;
-    left: -5%;
-    font-size: 3rem;
-    color: var(--button-color);
-    z-index: 0;
-    cursor: pointer;
-    user-select: none;
+  position: absolute;
+  top: 50%;
+  left: -5%;
+  font-size: 3rem;
+  color: var(--button-color);
+  z-index: 0;
+  cursor: pointer;
+  user-select: none;
 }
-

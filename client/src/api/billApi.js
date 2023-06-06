@@ -1,7 +1,7 @@
 import axiosClient from './axiosClient';
 import { url } from './constants';
 
-const billApi = {
+const BillApi = {
   getAll: () => {
     const requestUrl = url + '/bill';
     return axiosClient.get(requestUrl);
@@ -14,5 +14,9 @@ const billApi = {
     const requestUrl = url + `/bill/list-bill`;
     return axiosClient.get(requestUrl);
   },
+  create: listCart => {
+    const requestUrl = url + `/bill`;
+    return axiosClient.post(requestUrl, listCart);
+  },
 };
-export default billApi;
+export default BillApi;

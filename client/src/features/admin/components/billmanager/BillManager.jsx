@@ -9,7 +9,6 @@ import { Table, Space, Input, Modal, Button } from 'antd';
 const { Search } = Input;
 
 const BillManager = () => {
-
   const [listBill, setListBill] = useState([]);
 
   const [isModalShowVisible, setIsModalShowVisible] = useState(false);
@@ -101,7 +100,7 @@ const BillManager = () => {
       sorter: (a, b) => a.totalPrice - b.totalPrice,
     },
     {
-      title:'Status',
+      title: 'Status',
       dataIndex: 'status',
       render: text => String(text),
       sorter: (a, b) => a.totalPrice - b.totalPrice,
@@ -182,9 +181,8 @@ const BillManager = () => {
           </button>
         </Space>
       ),
-    }
-
-  ]
+    },
+  ];
 
   return (
     <>
@@ -195,12 +193,18 @@ const BillManager = () => {
         onCancel={handleShowCancel}
       >
         <div class="form-group">
-          <label for="name">Price: (VND)</label>
-          <input type="price" class="form-control" id="price" placeholder="Enter username" value={modelCurrentAction.totalPrice}></input>
+          <label for="name">Price: (USD)</label>
+          <input
+            type="price"
+            class="form-control"
+            id="price"
+            placeholder="Enter username"
+            value={modelCurrentAction.totalPrice}
+          ></input>
         </div>
 
         <p>Thêm id hoặc username của người dùng ở đây nha</p>
-        
+
         <div class="dropdown">
           <label>Status: </label>
           <select name="status" id="status" class="form-control">
@@ -211,11 +215,26 @@ const BillManager = () => {
 
         <div class="date">
           <label for="date">Date: </label>
-          <input type="date" class="form-control" id="date" value={modelCurrentAction.date}></input>
+          <input
+            type="date"
+            class="form-control"
+            id="date"
+            value={modelCurrentAction.date}
+          ></input>
           <label for="createat">Create at: </label>
-          <input type="date" class="form-control" id="createat" value={modelCurrentAction.createdAt}></input>
+          <input
+            type="date"
+            class="form-control"
+            id="createat"
+            value={modelCurrentAction.createdAt}
+          ></input>
           <label for="updateat">Update at: </label>
-          <input type="date" class="form-control" id="updateat" value={modelCurrentAction.updatedAt}></input>
+          <input
+            type="date"
+            class="form-control"
+            id="updateat"
+            value={modelCurrentAction.updatedAt}
+          ></input>
         </div>
       </Modal>
       <Modal
@@ -225,11 +244,19 @@ const BillManager = () => {
         onCancel={handleUpdateCancel}
       >
         <div class="form-group">
-          <label for="name">Price: (VND)</label>
-          <input type="price" class="form-control" id="price" placeholder="Enter username" value={modelCurrentAction.totalPrice}></input>
+          <label for="name">Price: (USD)</label>
+          <input
+            type="price"
+            class="form-control"
+            id="price"
+            placeholder="Enter username"
+            value={modelCurrentAction.totalPrice}
+          ></input>
         </div>
-        
-        <p>Thêm id hoặc username của người dùng ở đây nha(Không được chỉnh sửa)</p>
+
+        <p>
+          Thêm id hoặc username của người dùng ở đây nha(Không được chỉnh sửa)
+        </p>
 
         <div class="dropdown">
           <label>Status: </label>
@@ -241,7 +268,12 @@ const BillManager = () => {
 
         <div class="date">
           <label for="date">Date: </label>
-          <input type="date" class="form-control" id="date" value={modelCurrentAction.date}></input>          
+          <input
+            type="date"
+            class="form-control"
+            id="date"
+            value={modelCurrentAction.date}
+          ></input>
         </div>
       </Modal>
       <Modal
@@ -251,10 +283,16 @@ const BillManager = () => {
         onCancel={handleConfirmCancel}
       >
         <div class="form-group">
-          <label for="name">Price: (VND)</label>
-          <input type="price" class="form-control" id="price" placeholder="Enter username" value={modelCurrentAction.totalPrice}></input>
+          <label for="name">Price: (USD)</label>
+          <input
+            type="price"
+            class="form-control"
+            id="price"
+            placeholder="Enter username"
+            value={modelCurrentAction.totalPrice}
+          ></input>
         </div>
-        
+
         <p>Thêm id hoặc username của người dùng ở đây nha</p>
 
         <div class="dropdown">
@@ -267,11 +305,26 @@ const BillManager = () => {
 
         <div class="date">
           <label for="date">Date: </label>
-          <input type="date" class="form-control" id="date" value={modelCurrentAction.date}></input>
+          <input
+            type="date"
+            class="form-control"
+            id="date"
+            value={modelCurrentAction.date}
+          ></input>
           <label for="createat">Create at: </label>
-          <input type="date" class="form-control" id="createat" value={modelCurrentAction.createdAt}></input>
+          <input
+            type="date"
+            class="form-control"
+            id="createat"
+            value={modelCurrentAction.createdAt}
+          ></input>
           <label for="updateat">Update at: </label>
-          <input type="date" class="form-control" id="updateat" value={modelCurrentAction.updatedAt}></input>
+          <input
+            type="date"
+            class="form-control"
+            id="updateat"
+            value={modelCurrentAction.updatedAt}
+          ></input>
         </div>
       </Modal>
 
@@ -282,10 +335,8 @@ const BillManager = () => {
         onCancel={handleCancelCancel}
       >
         <p>ARE YOU SURE TO CANCEL THIS BILL?</p>
-        {modelCurrentAction.totalPrice},
-        {modelCurrentAction.status} 
+        {modelCurrentAction.totalPrice},{modelCurrentAction.status}
         {modelCurrentAction.date},
- 
       </Modal>
 
       <Modal
@@ -296,10 +347,9 @@ const BillManager = () => {
       >
         <p>Model Delete</p>
         <p>Are you sure to delete this bill?</p>
-        {modelCurrentAction.totalPrice} VND,
+        {modelCurrentAction.totalPrice} USD,
         {modelCurrentAction.status}
         {modelCurrentAction.date},
-
       </Modal>
 
       <div className="bill-utilities">
@@ -321,7 +371,7 @@ const BillManager = () => {
         />
       </div>
     </>
-  )
+  );
 };
 
 export default BillManager;

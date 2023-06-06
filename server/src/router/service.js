@@ -4,6 +4,7 @@ const verifyToken = require("../middleware/verify-token");
 const role = require("../middleware/role");
 const ServiceController = require("../controller/ServiceController");
 const InstanceController = require("../controller/InstanceController");
+const upload = require("../middleware/upload");
 
 router.get("/", ServiceController.index);
 
@@ -11,8 +12,16 @@ router.get(
   "/get-service-list/:service_code",
   ServiceController.showServiceList
 );
+
 router.get("/tag/:slug", ServiceController.showServiceFromTag);
+
 router.get("/:slug", ServiceController.show);
+
+router.post(
+  "/recommend-serivce",
+  upload.simple,
+  ServiceController.showServiceFromSuggetedUpload
+);
 
 router.post("/", [verifyToken, role.employee], ServiceController.create);
 

@@ -1,9 +1,13 @@
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
-const { Service, Rate, User, Category } = require("../model");
+const { Service, Rate, User, Category, Instance } = require("../model");
 const Image = require("../model/Image");
 const Tag = require("../model/Tag");
 const TagServices = require("../model/TagServices");
+const axios = require("axios");
+const { FileStorage } = require("multer");
+const fs = require("fs");
+const { Op } = require("sequelize");
 
 module.exports = {
   index: async (req, res) => {
@@ -17,9 +21,7 @@ module.exports = {
   show: async (req, res) => {
     try {
       const service = await Service.findOne({
-        include: {
-          model: Image,
-        },
+        include: [{ model: Image }, { model: Instance }],
         where: { slug: req.params.slug },
       });
       return res.json({ success: true, service });
@@ -34,7 +36,11 @@ module.exports = {
       const serviceList = await Service.findAll({
         where: { "$category.name$": service_code },
         order: [["createdAt", "DESC"]],
-        include: [{ model: Category, attributes: ["name"] }, { model: Image }],
+        include: [
+          { model: Category, attributes: ["name"] },
+          { model: Image },
+          { model: Instance },
+        ],
       });
       const category = await Category.findOne({
         where: { name: req.params.service_code },
@@ -129,6 +135,48 @@ module.exports = {
     } catch (error) {
       console.log(error);
       res.status(500).json({
+        success: false,
+        message: "Internal server error",
+      });
+    }
+  },
+  showServiceFromSuggetedUpload: async (req, res) => {
+    try {
+      const { listRecommendImg, categoryId } = req.body;
+      let serviceIds = [];
+      if (listRecommendImg) {
+        for (let recommendImg of listRecommendImg) {
+          const image = await Image.findOne({ where: { name: recommendImg } });
+          if (image) serviceIds.push(image.serviceId);
+        }
+      }
+      const listService = await Service.findAll({
+        where: {
+          id: {
+            [Op.in]: serviceIds,
+          },
+        },
+        order: [["createdAt", "DESC"]],
+        include: [
+          { model: Category, attributes: ["name"] },
+          { model: Image },
+          { model: Instance },
+        ],
+      });
+      if (listService.length == 0)
+        return res.json({
+          success: false,
+          message: "Service not found",
+        });
+      return res.json({
+        success: true,
+        message: "Service search successfully",
+        serviceList: listService,
+        categoryId: categoryId,
+      });
+    } catch (error) {
+      console.log(error);
+      res.json({
         success: false,
         message: "Internal server error",
       });

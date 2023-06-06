@@ -7,6 +7,7 @@ const {
   RoleAccounts,
   Role,
   Cart,
+  Instance,
 } = require("../model");
 
 module.exports = {
@@ -106,16 +107,20 @@ module.exports = {
           checkStatus = false;
           break;
         }
-        checkService = await Service.findOne({
-          where: { id: checkCart.serviceId },
+        checkService = await Instance.findOne({
+          where: { id: checkCart.instanceId },
         });
-        if (!checkService) {
+        if (!checkService || checkService.amount < checkCart.amount) {
           checkStatus = false;
           break;
         }
       }
       if (!checkStatus)
-        return res.json({ success: false, message: "Service doesn't exist" });
+        return res.json({
+          success: false,
+          message:
+            "The product is not in sufficient quantity or does not exist",
+        });
       const listCart = await Cart.findAll({ where: { id: listCartId } });
       var totalPrice = 0;
       newBill = new Bill({
@@ -124,24 +129,22 @@ module.exports = {
         managerId: "",
         userId: account.user.id,
       });
+      var tempInstance = null;
       var tempService = null;
       for (var element = 0; element < listCart.length; element++) {
+        tempInstance = await Instance.findOne({
+          where: { id: listCart[element].instanceId },
+        });
         tempService = await Service.findOne({
-          where: { id: listCart[element].serviceId },
+          where: { id: tempInstance.serviceId },
         });
         newBillDetail = new BillDetail({
           amount: listCart[element].amount,
-          price: tempService.price,
-          numberOfPeople: listCart[element].numberOfPeople,
-          numberOfChild: listCart[element].numberOfChild,
+          price: tempService.price * listCart[element].amount,
           billId: newBill.id,
-          serviceId: listCart[element].serviceId,
+          instanceId: listCart[element].instanceId,
         });
-        totalPrice +=
-          listCart[element].amount *
-          (tempService.price *
-            (listCart[element].numberOfPeople -
-              listCart[element].numberOfChild / 2));
+        totalPrice += listCart[element].amount * tempService.price;
         newBillDetailArray.push(newBillDetail);
       }
       newBill.totalPrice = totalPrice;
@@ -149,10 +152,11 @@ module.exports = {
       newBillDetailArray.forEach(async (element) => {
         await element.save();
       });
+      await Cart.destroy({ where: { userId: account.user.id } });
       return res.json({ success: true, message: "Bill create successful" });
     } catch (error) {
       console.log(error);
-      res
+      return res
         .status(500)
         .json({ success: false, message: "Internal server error" });
     }

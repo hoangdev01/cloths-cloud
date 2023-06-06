@@ -47,4 +47,6 @@ router.get("/cart/:slug", verifyToken, UserController.showCart);
 
 router.post("/cart", verifyToken, UserController.createCart);
 
+router.delete("/cart/:id", verifyToken, UserController.destroyCart);
+
 module.exports = router;

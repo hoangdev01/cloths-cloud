@@ -165,6 +165,11 @@ const ClothManager = () => {
     setIsModalInstanceVisible(true);
   };
   const handleInstanceOk = () => {
+    if (hasNullZeroEmpty(listInstanceCurrentAction)) {
+      alert('Product details cannot leave the attribute blank');
+      return;
+    }
+
     let filteredItems =
       listInstanceCurrentAction.length > 0
         ? listInstanceCurrentAction.filter(item => {
@@ -226,6 +231,15 @@ const ClothManager = () => {
       return newItems;
     });
   };
+
+  const hasNullZeroEmpty = array => {
+    return array.some(obj => {
+      return Object.values(obj).some(
+        value => value === null || value === 0 || value === ''
+      );
+    });
+  };
+
   const columns = [
     // {
     //   title: 'id',
@@ -402,7 +416,7 @@ const ClothManager = () => {
           <input
             type="price"
             class="form-control"
-            placeholder="Enter price (VND)"
+            placeholder="Enter price (USD)"
             value={price}
             name="price"
             onChange={onchangeModelCurrentAction}
@@ -477,7 +491,7 @@ const ClothManager = () => {
           <input
             type="price"
             class="form-control"
-            placeholder="Enter price (VND)"
+            placeholder="Enter price (USD)"
             value={price}
             name="price"
             onChange={onchangeModelCurrentAction}
@@ -579,7 +593,6 @@ const ClothManager = () => {
             type="button"
             class="btn btn-primary"
             onClick={() => {
-              // if (listInstanceCurrentAction==[])
               setListInstanceCurrentAction([
                 ...listInstanceCurrentAction,
                 entryInstanceModal,

@@ -6,6 +6,10 @@ const serviceAPI = {
     const requestUrl = url + '/service';
     return axiosClient.get(requestUrl, { params });
   },
+  getRecommendService: params => {
+    const requestUrl = url + `/service/recommend-serivce`;
+    return axiosClient.post(requestUrl, params);
+  },
   getService: slug => {
     const requestUrl = url + `/service/${slug}`;
     return axiosClient.get(requestUrl);

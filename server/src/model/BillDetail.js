@@ -18,14 +18,6 @@ const BillDetail = sequelize.define("billDetail", {
     allowNull: true,
     defaultValue: 0,
   },
-  numberOfPeople: {
-    type: Sequelize.INTEGER,
-    defaultValue: 1,
-  },
-  numberOfChild: {
-    type: Sequelize.INTEGER,
-    defaultValue: 0,
-  },
 });
 
 module.exports = BillDetail;

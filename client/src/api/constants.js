@@ -1,1 +1,2 @@
 export const url = process.env.REACT_APP_API_URL;
+export const ai_url = process.env.REACT_APP_RECOMMEND_AI_API_URL;

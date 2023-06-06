@@ -53,8 +53,10 @@ const multipleUpload = multer({
   storage: multerS3Config,
   fileFilter: fileFilter,
 }).array("media", LIMIT_UNEXPECTED_FILE);
+const simple = multer().single("file");
 
 module.exports = {
   singleUpload,
   multipleUpload,
+  simple,
 };

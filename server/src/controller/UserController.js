@@ -7,6 +7,7 @@ const {
   RoleAccounts,
   Category,
   Image,
+  Instance,
 } = require("../model");
 
 module.exports = {
@@ -288,7 +289,19 @@ module.exports = {
     try {
       const user = await User.findOne({ where: { accountId: req.userId } });
       const listCart = await Cart.findAll({
-        include: Service,
+        include: {
+          model: Instance,
+          include: {
+            model: Service,
+            include: [
+              {
+                model: Category,
+                attributes: ["name", "description"],
+              },
+              { model: Image, attributes: ["path"] },
+            ],
+          },
+        },
         where: { userId: user.id },
       });
       res.json({ success: true, listCart });
@@ -303,14 +316,17 @@ module.exports = {
     try {
       const cart = await Cart.findOne({
         include: {
-          model: Service,
-          include: [
-            {
-              model: Category,
-              attributes: ["name", "description"],
-            },
-            { model: Image, attributes: ["path"] },
-          ],
+          model: Instance,
+          include: {
+            model: Service,
+            include: [
+              {
+                model: Category,
+                attributes: ["name", "description"],
+              },
+              { model: Image, attributes: ["path"] },
+            ],
+          },
         },
         where: { slug: req.params.slug },
       });
@@ -321,19 +337,8 @@ module.exports = {
     }
   },
   createCart: async (req, res) => {
-    const { amount, serviceId, numberOfPeople, numberOfChild } = req.body;
+    const { amount, instanceId, type } = req.body;
     try {
-      if (
-        !numberOfChild ||
-        !numberOfPeople ||
-        numberOfChild < 0 ||
-        numberOfPeople <= 0 ||
-        numberOfPeople < numberOfChild
-      )
-        return res.json({
-          success: false,
-          message: "Incorrect number of people",
-        });
       const user = await User.findOne({ where: { accountId: req.userId } });
       if (!user)
         return res
@@ -341,32 +346,60 @@ module.exports = {
           .json({ message: false, message: "User does not exist" });
       if (amount < 1)
         return res.json({ success: false, message: "Invalid amount" });
-      const service = await Service.findOne({ where: { id: serviceId } });
-      if (!service)
+      const instance = await Instance.findOne({
+        include: { model: Service },
+        where: { id: instanceId },
+      });
+      if (!instance)
         return res
           .status(404)
           .json({ success: false, message: "Service does not exist" });
       const cart = await Cart.findOne({
-        where: { userId: user.id, serviceId },
+        where: { userId: user.id, instanceId },
       });
       if (!cart) {
         const newCart = new Cart({
           amount,
-          serviceId,
+          instanceId,
           userId: user.id,
-          numberOfChild: numberOfChild || 0,
-          numberOfPeople: numberOfPeople || 0,
         });
         await newCart.save();
       } else {
+        let amountTemp = cart.amount + amount || cart.amount;
+        if (type && type.toUpperCase() == "UPDATE") {
+          amountTemp = amount;
+        }
         await Cart.update(
           {
-            amount: cart.amount + amount || cart.amount,
-            serviceId: serviceId || cart.serviceId,
+            amount: amountTemp,
+            instanceId: instanceId || cart.instanceId,
           },
           { where: { id: cart.id } }
         );
       }
+      res.json({ success: true, message: "Update cart successful" });
+    } catch (error) {
+      console.log(error);
+      res
+        .status(500)
+        .json({ success: false, message: "Internal server error" });
+    }
+  },
+  destroyCart: async (req, res) => {
+    try {
+      const user = await User.findOne({ where: { accountId: req.userId } });
+      if (!user)
+        return res
+          .status(404)
+          .json({ message: false, message: "User does not exist" });
+      const cart = await Cart.findOne({
+        where: { id: req.params.id, userId: user.id },
+      });
+      if (!cart)
+        return res
+          .status(404)
+          .json({ success: false, message: "Cart does not exist" });
+      await Cart.destroy({ where: { id: req.params.id } });
       res.json({ success: true, message: "Update cart successful" });
     } catch (error) {
       console.log(error);

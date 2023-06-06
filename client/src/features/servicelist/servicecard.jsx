@@ -2,7 +2,7 @@ import { Box, Button, Container, Image, Text } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 import { AiFillStar } from 'react-icons/ai';
-import image from '../../assets/tour-img/tour-1.jpg';
+import image from '../../assets/cloth.jpg';
 const ServiceCard = ({ item }) => {
   const randomStar = () => {
     return Math.floor(Math.random() * 6) + 1;
@@ -10,8 +10,17 @@ const ServiceCard = ({ item }) => {
 
   const resRandom = randomStar();
 
+  let imagePath = image;
+
+  if (item.images) {
+    for (let img of item.images) {
+      imagePath = img.is_avatar ? img.path : imagePath;
+      console.log(imagePath);
+    }
+  }
+
   return (
-    <Box px={'15px'} w={'full'} mb="20px">
+    <Box px={'15px'} w={'full'} mb="20px" h={'370px'}>
       <Link to={`/cloth-detail/${item.slug}`}>
         <Box
           overflow={'hidden'}
@@ -28,10 +37,15 @@ const ServiceCard = ({ item }) => {
             transition: 'all 0.1s linear',
           }}
         >
-          <Box>
-            <Image maxW={'full'} src={image}></Image>
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <Image
+              // maxW={'full'}
+              src={imagePath}
+              objectFit="cover"
+              boxSize="200px"
+            ></Image>
           </Box>
-          <Box pt={'10px'} px={'16px'} minH={'80px'}>
+          <Box pt={'10px'} px={'16px'} maxH={'80px'}>
             <Text
               color={'var(--black-color)'}
               fontWeight={'500'}
@@ -42,7 +56,7 @@ const ServiceCard = ({ item }) => {
             <Text color={'#e8604c'}>
               {(item.price || 'None').toLocaleString('vi', {
                 style: 'currency',
-                currency: 'VND',
+                currency: 'USD',
               })}
             </Text>
           </Box>
