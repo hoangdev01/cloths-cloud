@@ -11,6 +11,9 @@ import style from './style.css';
 import CartApi from '../../api/cartApi.js';
 import FBComment from '../../components/social/FbComment.jsx';
 import serviceAPI from '../../api/serviceApi.js';
+import { Card, Upload } from 'antd';
+import { InboxOutlined } from '@ant-design/icons';
+import { virtual_url } from '../../api/constants.js';
 
 import {
   Box,
@@ -35,6 +38,8 @@ import {
 import { InputNumber } from 'antd';
 import { AuthContext } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+
+const { Dragger } = Upload;
 
 const handleMouseDown = e => {
   e.preventDefault(); // Ngăn chặn việc chọn văn bản
@@ -68,6 +73,51 @@ const ServiceDetail = () => {
     setSelectAmount(newValue);
   };
   const [cart, setCart] = useState([]);
+  const fetchImageAsBlob = async imageUrl => {
+    const response = await fetch(imageUrl);
+    const blob = await response.blob();
+    return blob;
+  };
+  const handleUpload = async ({ file, onSuccess, onError }) => {
+    console.log('formData1');
+    const image = service.images.find(image => image.is_avatar);
+    console.log('formData2');
+    if (!image) {
+      alert('This product has no pictures yet');
+      return;
+    }
+    console.log('formDat3a');
+    const formData = new FormData();
+    console.log('formDat4a');
+    const imageBlob = await fetchImageAsBlob(image.path);
+    console.log('formData5');
+    formData.append('model', file);
+    formData.append('cloth', imageBlob);
+    console.log('formDa6ta');
+
+    try {
+      axios
+        .post(`${virtual_url}/api/upload`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(res => {
+          alert('success');
+          onSuccess();
+        });
+      console.log('formData');
+    } catch (error) {
+      onError(error);
+    }
+  };
+
+  const draggerProps = {
+    name: 'file',
+    multiple: false,
+    showUploadList: false,
+    method: 'post',
+  };
 
   useEffect(() => {
     calculateTotalAge();
@@ -446,6 +496,23 @@ const ServiceDetail = () => {
           </Button>
         </Stack>
       </SimpleGrid>
+      <Card
+        title="Virtual try on"
+        extra={<a href="#">More</a>}
+        style={{ width: '40%' }}
+      >
+        <Dragger {...draggerProps} beforeUpload={handleUpload}>
+          <p className="ant-upload-drag-icon">
+            <InboxOutlined />
+          </p>
+          <p className="ant-upload-text">
+            Click or drag file to this area to upload a suggesting image
+          </p>
+          <p className="ant-upload-hint">
+            Support to search for products by suggested images uploaded
+          </p>
+        </Dragger>
+      </Card>
       <Modal isOpen={show} onClose={handleClose}>
         <ModalOverlay />
         <ModalContent>

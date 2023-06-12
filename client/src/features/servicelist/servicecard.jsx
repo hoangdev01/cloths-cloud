@@ -41,7 +41,7 @@ const ServiceCard = ({ item }) => {
             <Image
               // maxW={'full'}
               src={imagePath}
-              objectFit="cover"
+              objectFit="contain"
               boxSize="200px"
             ></Image>
           </Box>

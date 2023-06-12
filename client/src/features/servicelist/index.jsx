@@ -11,7 +11,7 @@ import {
   Flex,
   Tooltip,
 } from '@chakra-ui/react';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import Services from './services';
 import { InboxOutlined } from '@ant-design/icons';
 import { message, Upload } from 'antd';
@@ -28,7 +28,6 @@ function ServiceList(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [isRotating, setIsRotating] = useState(false);
   const [isClicked, setIsClicked] = useState(1);
-  const draggerRef = useRef(null);
 
   const handleClick = () => {
     setIsRotating(true);
@@ -75,12 +74,19 @@ function ServiceList(props) {
             .then(res => {
               if (res.data.success) {
                 setList(res.data.serviceList);
-                setIsLoading(false);
+              } else {
+                alert('Product not found');
+                serviceAPI.getServiceList('cloth').then(res => {
+                  const list = res.data.serviceList;
+                  setList(res.data.serviceList);
+                  setCategoryId(res.data.categoryId);
+                });
               }
             });
-        } else {
+        } else if (info.file.response.success == false) {
           message.error(`${info.file.response.message}`);
         }
+        setIsLoading(false);
       } else if (status === 'error') {
         setIsLoading(false);
         message.error(`${info.file.name} file upload failed.`);
@@ -145,7 +151,7 @@ function ServiceList(props) {
                 />
               </Tooltip>
             </Flex>
-            <Dragger {...draggerProps} ref={draggerRef}>
+            <Dragger {...draggerProps}>
               <p className="ant-upload-drag-icon">
                 <InboxOutlined />
               </p>

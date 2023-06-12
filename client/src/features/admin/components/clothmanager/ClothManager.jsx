@@ -2,6 +2,7 @@ import React from 'react';
 import './clothmanager.scss';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
+import RunCircleIcon from '@mui/icons-material/RunCircle';
 import serviceApi from '../../../../api/serviceApi';
 import { useState, useEffect } from 'react';
 import {
@@ -18,6 +19,8 @@ import 'antd/dist/antd.css';
 import moment from 'moment';
 import UploadBox from '../../../../components/upload-box/upload-box';
 import { CloseCircleOutlined } from '@ant-design/icons';
+import axios from 'axios';
+import { ai_url } from '../../../../api/constants';
 const { Search } = Input;
 
 const ClothManager = () => {
@@ -69,6 +72,13 @@ const ClothManager = () => {
     setSuccessStatus('');
     setIsModalAddVisible(true);
     setModelCurrentAction(entryModal);
+  };
+  const renderRecommenData = () => {
+    axios.post(`${ai_url}/render`).then(res => {
+      if (res.data.success) {
+        alert('Render successful');
+      }
+    });
   };
   const formatInteger = value => {
     if (value === undefined || value === null || value === '') {
@@ -620,6 +630,23 @@ const ClothManager = () => {
           </div>
           <div className="right">
             <span className="counter">Add new</span>
+          </div>
+        </div>
+        <div className="btn-add-cloth" onClick={renderRecommenData}>
+          <div className="left">
+            <div className="percentage positive">
+              <RunCircleIcon />
+            </div>
+            <BookmarksIcon
+              className="icon"
+              style={{
+                color: 'green',
+                backgroundColor: 'rgba(0, 128, 0, 0.2)',
+              }}
+            />
+          </div>
+          <div className="right">
+            <span className="counter">Render</span>
           </div>
         </div>
         <Search
