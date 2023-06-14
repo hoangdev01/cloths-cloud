@@ -110,18 +110,45 @@ const BillManager = () => {
       dataIndex: 'date',
       key: 'date',
       sorter: (a, b) => moment(a.date).unix() - moment(b.date).unix(),
+      render: text => {
+        if (!text) return;
+        const date = new Date(text);
+        const formattedDate = `${date.getDate()}/${
+          date.getMonth() + 1
+        }/${date.getFullYear()}`;
+        const formattedTime = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+        return `${formattedDate} ${formattedTime}`;
+      },
     },
     {
       title: 'Created At',
       dataIndex: 'createdAt',
       key: 'createdAt',
       sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
+      render: text => {
+        if (!text) return;
+        const date = new Date(text);
+        const formattedDate = `${date.getDate()}/${
+          date.getMonth() + 1
+        }/${date.getFullYear()}`;
+        const formattedTime = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+        return `${formattedDate} ${formattedTime}`;
+      },
     },
     {
       title: 'Updated At',
       dataIndex: 'updatedAt',
       key: 'updatedAt',
       sorter: (a, b) => moment(a.updatedAt).unix() - moment(b.updatedAt).unix(),
+      render: text => {
+        if (!text) return;
+        const date = new Date(text);
+        const formattedDate = `${date.getDate()}/${
+          date.getMonth() + 1
+        }/${date.getFullYear()}`;
+        const formattedTime = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+        return `${formattedDate} ${formattedTime}`;
+      },
     },
 
     {

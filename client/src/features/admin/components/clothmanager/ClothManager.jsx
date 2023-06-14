@@ -250,6 +250,13 @@ const ClothManager = () => {
     });
   };
 
+  const formatCurrency = (amount, currencyCode = 'USD') => {
+    return amount.toLocaleString('en-US', {
+      style: 'currency',
+      currency: currencyCode,
+    });
+  };
+
   const columns = [
     // {
     //   title: 'id',
@@ -282,6 +289,7 @@ const ClothManager = () => {
       dataIndex: 'price',
       sorter: (a, b) => a.price - b.price,
       width: 120,
+      render: price => formatCurrency(price, 'USD'),
     },
     {
       title: 'Is active',

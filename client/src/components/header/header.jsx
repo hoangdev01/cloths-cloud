@@ -9,7 +9,7 @@ import {
   Text,
   VStack,
   Fade,
-  useOutsideClick
+  useOutsideClick,
 } from '@chakra-ui/react';
 import FBChat from '../social/FbChat';
 import { Link } from 'react-router-dom';
@@ -20,7 +20,6 @@ import { BsSearch } from 'react-icons/bs';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { FaRegUser } from 'react-icons/fa';
 import { AuthContext } from '../../contexts/AuthContext';
-
 
 // const MenuBar = ['Tour', 'Contact', 'About'];
 
@@ -36,7 +35,7 @@ const Header = () => {
 
   const [showMenu, setShowMenu] = useState(0);
   const [optionUser, setOptionUser] = useState(false);
-  const ref = React.useRef()
+  const ref = React.useRef();
 
   const {
     authState: { authLoading, isAuthenticated },
@@ -49,7 +48,7 @@ const Header = () => {
   useOutsideClick({
     ref: ref,
     handler: () => setOptionUser(false),
-  })
+  });
 
   useEffect(() => {
     window.addEventListener('scroll', ScrollShowMenu);
@@ -58,7 +57,6 @@ const Header = () => {
   function handleClick(event) {
     event.preventDefault();
   }
-  
 
   return (
     <Container
@@ -66,7 +64,7 @@ const Header = () => {
       centerContent
       p={0}
       position={'relative'}
-      display={isAdminUrl?"none":"block"}
+      display={isAdminUrl ? 'none' : 'block'}
     >
       <VStack
         divider={<StackDivider borderColor="gray.300" />}
@@ -75,7 +73,6 @@ const Header = () => {
         inset={0}
         zIndex={1}
         h={'170px'}
-        
       >
         <Box
           py={showMenu ? '0px' : '12px'}
@@ -143,7 +140,7 @@ const Header = () => {
                         cursor={'pointer'}
                         _hover={{
                           color: 'midnightblue',
-                          backgroundColor: 'white'
+                          backgroundColor: 'white',
                         }}
                         rounded={'15px'}
                         color={'white'}
@@ -215,102 +212,120 @@ const Header = () => {
                     ref={ref}
                     onMouseDown={handleClick}
                   >
-
-                  <Fade in={optionUser}>
-                    <Box
-                      position={'absolute'}
-                      right={'0px'}
-                      minW={'150px'}
-                      py={'10px'}
-                      bg={'white'}
-                      boxShadow={'sm'}
-                      fontSize={'16px'}
-                      color={'#5C727D'}
-                      top={optionUser ? '102%' : '115%'}
-                      transition={'all 1s linear'}
-                      // opacity={optionUser ? '1' : '0'}
-                      display={optionUser ? 'block' : 'none'}
-                      rounded={'10px'}
-                      shadow='md'
-                      userSelect="none"
-                    >
-                      <Link
-                        to="/sign-in"
-                        style={{
-                          display: !isAuthenticated ? 'block' : 'none',
-                        }}
+                    <Fade in={optionUser}>
+                      <Box
+                        position={'absolute'}
+                        right={'0px'}
+                        minW={'150px'}
+                        py={'10px'}
+                        bg={'white'}
+                        boxShadow={'sm'}
+                        fontSize={'16px'}
+                        color={'#5C727D'}
+                        top={optionUser ? '102%' : '115%'}
+                        transition={'all 1s linear'}
+                        // opacity={optionUser ? '1' : '0'}
+                        display={optionUser ? 'block' : 'none'}
+                        rounded={'10px'}
+                        shadow="md"
                         userSelect="none"
                       >
-                        <Box px={'15px'} py={'7px'}>
-                          <Text
-                            _hover={{
-                              color: 'var(--hover-color)'
-                            }}
-                          >
-                            Sign in
-                          </Text>
-                        </Box>
-                      </Link>
-                      <Link
-                        to="/sign-up"
-                        style={{
-                          display: !isAuthenticated ? 'block' : 'none',
-                        }}
-                        userSelect="none"
-                      >
-                        <Box px={'15px'} py={'7px'}>
-                          <Text
-                            _hover={{
-                              color: 'var(--hover-color)',
-                            }}
-                            userSelect="none"
-                          >
-                            Register
-                          </Text>
-                        </Box>{' '}
-                      </Link>
-                      <Link
-                        to="/profile"
-                        style={{
-                          display: isAuthenticated ? 'block' : 'none',
-                        }}
-                        userSelect="none"
-                      >
-                        <Box px={'15px'} py={'7px'}>
-                          <Text
-                            _hover={{
-                              color: 'var(--hover-color)',
-                            }}
-                          >
-                            My Account
-                          </Text>
-                        </Box>
-                      </Link>
-                      <Link
-                        to="/logout"
-                        onClick={() => window.location.reload()}
-                        style={{
-                          display: isAuthenticated ? 'block' : 'none',
-                        }}
-                      >
-                        <Box px={'15px'} py={'7px'}>
-                          <Text
-                            _hover={{
-                              color: '#00c2cb',
-                            }}
-                          >
-                            Logout
-                          </Text>
-                        </Box>
-                      </Link>
-                    </Box>
-                  </Fade>
-                  <FaRegUser size={20} />
+                        <Link
+                          to="/sign-in"
+                          style={{
+                            display: !isAuthenticated ? 'block' : 'none',
+                          }}
+                          userSelect="none"
+                        >
+                          <Box px={'15px'} py={'7px'}>
+                            <Text
+                              _hover={{
+                                color: 'var(--hover-color)',
+                              }}
+                            >
+                              Sign in
+                            </Text>
+                          </Box>
+                        </Link>
+                        <Link
+                          to="/sign-up"
+                          style={{
+                            display: !isAuthenticated ? 'block' : 'none',
+                          }}
+                          userSelect="none"
+                        >
+                          <Box px={'15px'} py={'7px'}>
+                            <Text
+                              _hover={{
+                                color: 'var(--hover-color)',
+                              }}
+                              userSelect="none"
+                            >
+                              Register
+                            </Text>
+                          </Box>{' '}
+                        </Link>
+                        <Link
+                          to="/profile"
+                          style={{
+                            display: isAuthenticated ? 'block' : 'none',
+                          }}
+                          userSelect="none"
+                        >
+                          <Box px={'15px'} py={'7px'}>
+                            <Text
+                              _hover={{
+                                color: 'var(--hover-color)',
+                              }}
+                            >
+                              My Account
+                            </Text>
+                          </Box>
+                        </Link>
+                        <Link
+                          to="/purchase"
+                          style={{
+                            display: isAuthenticated ? 'block' : 'none',
+                          }}
+                          userSelect="none"
+                        >
+                          <Box px={'15px'} py={'7px'}>
+                            <Text
+                              _hover={{
+                                color: 'var(--hover-color)',
+                              }}
+                            >
+                              Purchase
+                            </Text>
+                          </Box>
+                        </Link>
+                        <Link
+                          to="/logout"
+                          onClick={() => window.location.reload()}
+                          style={{
+                            display: isAuthenticated ? 'block' : 'none',
+                          }}
+                        >
+                          <Box px={'15px'} py={'7px'}>
+                            <Text
+                              _hover={{
+                                color: '#00c2cb',
+                              }}
+                            >
+                              Logout
+                            </Text>
+                          </Box>
+                        </Link>
+                      </Box>
+                    </Fade>
+                    <FaRegUser size={20} />
                   </Box>
-                  <Link to="/cart"
+                  <Link
+                    to="/cart"
                     style={{
                       display: isAuthenticated ? 'block' : 'none',
-                    }}>
+                    }}
+                  >
                     <Box
                       shadow={'0 16px 32px 0 rgba(7, 28, 31, 0.1)'}
                       bgColor={'white'}

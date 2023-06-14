@@ -16,7 +16,8 @@ const Bill = sequelize.define(
     },
     date: {
       type: Sequelize.DATE,
-      defaultValue: Sequelize.NOW,
+      allowNull: true,
+      defaultValue: null,
     },
     totalPrice: {
       type: Sequelize.DOUBLE,

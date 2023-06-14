@@ -28,7 +28,7 @@ export const CartProductMeta = props => {
           rounded="lg"
           width="120px"
           height="120px"
-          fit="cover"
+          objectFit="contain"
           src={image || defaultImage}
           alt={name}
           draggable="false"

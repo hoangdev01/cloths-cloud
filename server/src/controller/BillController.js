@@ -8,6 +8,7 @@ const {
   Role,
   Cart,
   Instance,
+  Image,
 } = require("../model");
 
 module.exports = {
@@ -36,6 +37,25 @@ module.exports = {
         where: { id: req.userId },
       });
       var checkCondition = true;
+      const bill = await Bill.findOne({
+        where: { id: req.params.id },
+        include: [
+          {
+            model: User,
+            attributes: [],
+          },
+          {
+            model: BillDetail,
+            include: {
+              model: Instance,
+              include: {
+                model: Service,
+                include: Image,
+              },
+            },
+          },
+        ],
+      });
       if (userAccount.user.id != bill.userId) {
         checkCondition = false;
         userAccount.RoleAccounts.forEach((item) => {
@@ -46,13 +66,6 @@ module.exports = {
       }
       if (!checkCondition)
         return res.json({ success: false, message: "Bill not found" });
-      const bill = await Bill.findOne({
-        where: { id: req.params.id },
-        include: {
-          model: User,
-          attributes: [],
-        },
-      });
       return res.json({ success: true, bill });
     } catch (error) {
       console.log(error);
@@ -170,6 +183,7 @@ module.exports = {
       const bill = await Bill.findOne({ where: { id: billId } });
       if (!bill) return res.json({ success: false, message: "Bill not found" });
       bill.status = "paid";
+      bill.date = Date.now();
       bill.managerId = req.userId;
       bill.save();
       return res.json({ success: true, message: "Confirm bill success" });

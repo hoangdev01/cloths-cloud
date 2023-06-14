@@ -15,6 +15,7 @@ import Profile from './features/profile/profile.jsx';
 import Auth from './features/auth/auth';
 import Admin from './features/admin/Admin';
 import VerifyToken from './features/auth/verifytoken.js';
+import Purchase from './features/purchase/purchase.jsx';
 // import Auth from './features/auth/auth';
 
 function App() {
@@ -124,9 +125,11 @@ function App() {
           <Route path="/profile" exact element={<Profile />} />
         </Routes>
         <Routes>
+          <Route path="/purchase" exact element={<Purchase />} />
+        </Routes>
+        <Routes>
           <Route path="/cart" exact element={<Carts />} />
         </Routes>
-        
         <Footer />
       </Box>
     </AuthContextProvider>

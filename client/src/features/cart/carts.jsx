@@ -34,7 +34,7 @@ const Carts = () => {
       const description = service?.title ?? null;
       const quantity = amount;
       const imageUrl =
-        service?.images.find(image => image.is_avatar)?.path ?? null;
+        service?.images.find(image => image.is_avatar)?.path || null;
       const slug = service?.slug;
       const instanceAmount = instance?.amount;
       const color = instance?.color;
