@@ -120,7 +120,35 @@ const ServiceDetail = () => {
   };
 
   useEffect(() => {
-    calculateTotalAge();
+    serviceAPI
+      .getService(slug)
+      .then(res => {
+        const service = res.data.service;
+        setId(service.id);
+        setService(service);
+        setName(service.name);
+        setPrice(service.price);
+        setDescription(service.description);
+        setTitle(service.title);
+        // setGuide(service.guide);
+        const listSlideData = service.images.map(img => ({
+          image: img.path,
+        }));
+        const listSizeData = service.instances.map(instance => instance.size);
+        const listColorData = service.instances.map(instance => instance.color);
+        setSlideData(!listSlideData.length ? SliderDataDefault : listSlideData);
+        // console.log(listSlideData);
+        setSizes([...new Set(listSizeData)] || []);
+        setColors([...new Set(listColorData)] || []);
+
+        calculateTotalAge();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    CartApi.getAll().then(res => {
+      setCart(res.data.listCart);
+    });
   }, [selectedSize, selectedColor]);
 
   const handleSizeSelection = size => {

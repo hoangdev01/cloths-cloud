@@ -180,8 +180,40 @@ module.exports = {
     try {
       if (!billId)
         return res.json({ success: false, message: "Bill id not found" });
-      const bill = await Bill.findOne({ where: { id: billId } });
+      const bill = await Bill.findOne({
+        where: { id: billId },
+        include: {
+          model: BillDetail,
+          include: Instance,
+        },
+      });
       if (!bill) return res.json({ success: false, message: "Bill not found" });
+      if (bill.status != "unpaid")
+        return res.status(500).json({
+          success: false,
+          message: "Can not confirm with cancelled or paid bill",
+        });
+      var tempInstance = null;
+      var instanceArray = [];
+      for (var element = 0; element < bill?.billDetails?.length; element++) {
+        tempInstance = await Instance.findOne({
+          where: {
+            id: bill?.billDetails[element]?.instanceId || null,
+          },
+        });
+        if (tempInstance.amount < bill?.billDetails[element]?.instance?.amount)
+          return res.json({
+            success: false,
+            message: "Can not confirm, service unavailable",
+          });
+        tempInstance.amount =
+          tempInstance.amount - bill?.billDetails[element]?.amount;
+        instanceArray.push(tempInstance);
+      }
+      instanceArray.forEach(async (element) => {
+        await element.save();
+      });
+
       bill.status = "paid";
       bill.date = Date.now();
       bill.managerId = req.userId;

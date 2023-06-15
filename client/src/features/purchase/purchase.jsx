@@ -8,7 +8,6 @@ import moment from 'moment';
 import { Table, Space, Input, Modal, Button } from 'antd';
 import { Container } from '@chakra-ui/react';
 import {
-  Badge,
   Center,
   Flex,
   Heading,
@@ -16,7 +15,6 @@ import {
   Link,
   Stack,
   Text,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import image from '../../assets/cloth.jpg';
 

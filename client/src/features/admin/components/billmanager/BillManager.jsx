@@ -1,22 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import BookmarksIcon from '@mui/icons-material/Bookmarks';
 
 import billApi from '../../../../api/billApi';
 import './billmanager.scss';
-import { ClassNames } from '@emotion/react';
 import moment from 'moment';
 import { Table, Space, Input, Modal, Button } from 'antd';
+
+import {
+  Center,
+  Flex,
+  Heading,
+  Image,
+  Link,
+  Stack,
+  Text,
+} from '@chakra-ui/react';
+import image from '../../../../assets/cloth.jpg';
 const { Search } = Input;
 
 const BillManager = () => {
   const [listBill, setListBill] = useState([]);
 
   const [isModalShowVisible, setIsModalShowVisible] = useState(false);
-  const [isModalUpdateVisible, setIsModalUpdateVisible] = useState(false);
   const [isModalConfirmVisible, setIsModalConfirmVisible] = useState(false);
   const [isModalCancelVisible, setIsModalCancelVisible] = useState(false);
-  const [isModalDeleteVisible, setIsModalDeleteVisible] = useState(false);
   const [modelCurrentAction, setModelCurrentAction] = useState(false);
+  const [billDetail, setBillDetail] = useState([]);
+
+  const getDefaultImage = listImage => {
+    return listImage.find(image => image.is_avatar)?.path || image;
+  };
 
   useEffect(() => {
     billApi
@@ -30,6 +42,18 @@ const BillManager = () => {
       });
   }, []);
 
+  useEffect(() => {
+    if (modelCurrentAction.id)
+      billApi
+        .get(modelCurrentAction.id)
+        .then(response => {
+          setBillDetail(response.data.bill);
+        })
+        .catch(error => {
+          console.log('Failed to fetch BillList:', error);
+        });
+  }, [modelCurrentAction]);
+
   const showShowModal = () => {
     setIsModalShowVisible(true);
   };
@@ -40,21 +64,24 @@ const BillManager = () => {
     setIsModalShowVisible(false);
   };
 
-  const showUpdateModal = () => {
-    setIsModalUpdateVisible(true);
-  };
-  const handleUpdateOk = () => {
-    setIsModalUpdateVisible(false);
-  };
-  const handleUpdateCancel = () => {
-    setIsModalUpdateVisible(false);
-  };
-
   const showConfirmModal = () => {
     setIsModalConfirmVisible(true);
   };
   const handleConfirmOk = () => {
-    setIsModalConfirmVisible(false);
+    if (modelCurrentAction.id)
+      billApi.confirm({ billId: modelCurrentAction.id }).then(res => {
+        if (res.data.success) alert('This bill is confirmed');
+        else alert('Can not confirm this bill');
+        billApi
+          .getAll()
+          .then(response => {
+            setListBill(response.data.listBill);
+            setIsModalConfirmVisible(false);
+          })
+          .catch(error => {
+            console.log('Failed to fetch BillList:', error);
+          });
+      });
   };
   const handleConfirmCancel = () => {
     setIsModalConfirmVisible(false);
@@ -64,29 +91,26 @@ const BillManager = () => {
     setIsModalCancelVisible(true);
   };
   const handleCancelOk = () => {
+    if (modelCurrentAction.id)
+      billApi.cancel({ billId: modelCurrentAction.id }).then(res => {
+        if (res.data.success) alert('This bill is canceled');
+        else alert('Can not cancel this bill');
+        billApi
+          .getAll()
+          .then(response => {
+            setListBill(response.data.listBill);
+          })
+          .catch(error => {
+            console.log('Failed to fetch BillList:', error);
+          });
+      });
     setIsModalCancelVisible(false);
   };
   const handleCancelCancel = () => {
     setIsModalCancelVisible(false);
   };
 
-  const showDeleteModal = () => {
-    setIsModalDeleteVisible(true);
-  };
-  const handleDeleteOk = () => {
-    setIsModalDeleteVisible(false);
-  };
-  const handleDeleteCancel = () => {
-    setIsModalDeleteVisible(false);
-  };
-
   const columns = [
-    {
-      title: 'Id',
-      dataIndex: 'id',
-      render: text => String(text),
-      filterMode: 'tree',
-    },
     {
       title: 'User id',
       dataIndex: 'userId',
@@ -168,16 +192,6 @@ const BillManager = () => {
           </button>
           <button
             type="button"
-            class="btn btn-info"
-            onClick={() => {
-              setModelCurrentAction(record);
-              showUpdateModal();
-            }}
-          >
-            Update
-          </button>
-          <button
-            type="button"
             class="btn btn-success"
             onClick={() => {
               setModelCurrentAction(record);
@@ -196,16 +210,6 @@ const BillManager = () => {
           >
             Cancel
           </button>
-          <button
-            type="button"
-            class="btn btn-danger"
-            onClick={() => {
-              setModelCurrentAction(record);
-              showDeleteModal();
-            }}
-          >
-            Delete
-          </button>
         </Space>
       ),
     },
@@ -218,90 +222,68 @@ const BillManager = () => {
         visible={isModalShowVisible}
         onOk={handleShowOk}
         onCancel={handleShowCancel}
+        cancelButtonProps={{ style: { display: 'none' } }}
       >
-        <div class="form-group">
-          <label for="name">Price: (USD)</label>
-          <input
-            type="price"
-            class="form-control"
-            id="price"
-            placeholder="Enter username"
-            value={modelCurrentAction.totalPrice}
-          ></input>
-        </div>
-
-        <p>Thêm id hoặc username của người dùng ở đây nha</p>
-
-        <div class="dropdown">
-          <label>Status: </label>
-          <select name="status" id="status" class="form-control">
-            <option value="unpaid">Unpaid</option>
-            <option value="paid">Paid</option>
-          </select>
-        </div>
-
-        <div class="date">
-          <label for="date">Date: </label>
-          <input
-            type="date"
-            class="form-control"
-            id="date"
-            value={modelCurrentAction.date}
-          ></input>
-          <label for="createat">Create at: </label>
-          <input
-            type="date"
-            class="form-control"
-            id="createat"
-            value={modelCurrentAction.createdAt}
-          ></input>
-          <label for="updateat">Update at: </label>
-          <input
-            type="date"
-            class="form-control"
-            id="updateat"
-            value={modelCurrentAction.updatedAt}
-          ></input>
-        </div>
-      </Modal>
-      <Modal
-        title="Update user's informations"
-        visible={isModalUpdateVisible}
-        onOk={handleUpdateOk}
-        onCancel={handleUpdateCancel}
-      >
-        <div class="form-group">
-          <label for="name">Price: (USD)</label>
-          <input
-            type="price"
-            class="form-control"
-            id="price"
-            placeholder="Enter username"
-            value={modelCurrentAction.totalPrice}
-          ></input>
-        </div>
-
-        <p>
-          Thêm id hoặc username của người dùng ở đây nha(Không được chỉnh sửa)
-        </p>
-
-        <div class="dropdown">
-          <label>Status: </label>
-          <select name="status" id="status" class="form-control">
-            <option value="unpaid">Unpaid</option>
-            <option value="paid">Paid</option>
-          </select>
-        </div>
-
-        <div class="date">
-          <label for="date">Date: </label>
-          <input
-            type="date"
-            class="form-control"
-            id="date"
-            value={modelCurrentAction.date}
-          ></input>
-        </div>
+        {billDetail?.billDetails
+          ? billDetail.billDetails.map(item => (
+              <Center py={6}>
+                <Stack
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  w={{ sm: '90%', md: '90%' }}
+                  height={{ sm: '300px', md: '10rem' }}
+                  direction={{ base: 'column', md: 'row' }}
+                  bg={'white'}
+                  boxShadow={'2xl'}
+                  padding={4}
+                >
+                  <Flex flex={1}>
+                    <Link
+                      href={
+                        item.instance?.service
+                          ? `/cloth-detail/${item.instance?.service?.slug}`
+                          : ''
+                      }
+                    >
+                      <Image
+                        objectFit="contain"
+                        boxSize="100%"
+                        src={
+                          item?.instance?.service
+                            ? getDefaultImage(item.instance.service.images)
+                            : image
+                        }
+                        cursor="pointer"
+                        _hover={{ transform: 'scale(1.1)' }}
+                        transition="transform 0.1s ease"
+                      />
+                    </Link>
+                  </Flex>
+                  <Stack
+                    flex={2}
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    p={1}
+                    pt={2}
+                  >
+                    <Heading fontSize={'2xl'} fontFamily={'body'}>
+                      {item.instance?.service?.name || 'no data'}
+                    </Heading>
+                    <Text fontWeight={600} color={'gray.500'} size="sm" mb={4}>
+                      Color: {item.instance?.color || 'no data'}
+                    </Text>
+                    <Text fontWeight={600} color={'gray.500'} size="sm" mb={4}>
+                      Size: {item.instance?.size || 'no data'}
+                    </Text>
+                    <Text fontWeight={600} color={'gray.500'} size="sm" mb={4}>
+                      Amount: {item.instance?.amount || 'no data'}
+                    </Text>
+                  </Stack>
+                </Stack>
+              </Center>
+            ))
+          : null}
       </Modal>
       <Modal
         title="CONFIRM CURRENT BILL'S DETAILS"
@@ -309,50 +291,7 @@ const BillManager = () => {
         onOk={handleConfirmOk}
         onCancel={handleConfirmCancel}
       >
-        <div class="form-group">
-          <label for="name">Price: (USD)</label>
-          <input
-            type="price"
-            class="form-control"
-            id="price"
-            placeholder="Enter username"
-            value={modelCurrentAction.totalPrice}
-          ></input>
-        </div>
-
-        <p>Thêm id hoặc username của người dùng ở đây nha</p>
-
-        <div class="dropdown">
-          <label>Status: </label>
-          <select name="status" id="status" class="form-control">
-            <option value="unpaid">Unpaid</option>
-            <option value="paid">Paid</option>
-          </select>
-        </div>
-
-        <div class="date">
-          <label for="date">Date: </label>
-          <input
-            type="date"
-            class="form-control"
-            id="date"
-            value={modelCurrentAction.date}
-          ></input>
-          <label for="createat">Create at: </label>
-          <input
-            type="date"
-            class="form-control"
-            id="createat"
-            value={modelCurrentAction.createdAt}
-          ></input>
-          <label for="updateat">Update at: </label>
-          <input
-            type="date"
-            class="form-control"
-            id="updateat"
-            value={modelCurrentAction.updatedAt}
-          ></input>
-        </div>
+        <p>CONFIRM THIS BILL?</p>
       </Modal>
 
       <Modal
@@ -362,21 +301,6 @@ const BillManager = () => {
         onCancel={handleCancelCancel}
       >
         <p>ARE YOU SURE TO CANCEL THIS BILL?</p>
-        {modelCurrentAction.totalPrice},{modelCurrentAction.status}
-        {modelCurrentAction.date},
-      </Modal>
-
-      <Modal
-        title="Delete Modal"
-        visible={isModalDeleteVisible}
-        onOk={handleDeleteOk}
-        onCancel={handleDeleteCancel}
-      >
-        <p>Model Delete</p>
-        <p>Are you sure to delete this bill?</p>
-        {modelCurrentAction.totalPrice} USD,
-        {modelCurrentAction.status}
-        {modelCurrentAction.date},
       </Modal>
 
       <div className="bill-utilities">

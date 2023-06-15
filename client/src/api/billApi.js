@@ -22,5 +22,9 @@ const BillApi = {
     const requestUrl = url + `/bill/cancel-bill`;
     return axiosClient.put(requestUrl, billId);
   },
+  confirm: billId => {
+    const requestUrl = url + `/bill/confirm-bill`;
+    return axiosClient.put(requestUrl, billId);
+  },
 };
 export default BillApi;
