@@ -13,7 +13,7 @@ import FBComment from '../../components/social/FbComment.jsx';
 import serviceAPI from '../../api/serviceApi.js';
 import { Card, Upload } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
-import { virtual_url } from '../../api/constants.js';
+import { virtual_url, mediaUrl } from '../../api/constants.js';
 
 import {
   Box,
@@ -132,7 +132,7 @@ const ServiceDetail = () => {
         setTitle(service.title);
         // setGuide(service.guide);
         const listSlideData = service.images.map(img => ({
-          image: img.path,
+          image: `${mediaUrl}/${img.name}`,
         }));
         const listSizeData = service.instances.map(instance => instance.size);
         const listColorData = service.instances.map(instance => instance.color);
@@ -174,7 +174,7 @@ const ServiceDetail = () => {
         setTitle(service.title);
         // setGuide(service.guide);
         const listSlideData = service.images.map(img => ({
-          image: img.path,
+          image: `${mediaUrl}/${img.name}`,
         }));
         const listSizeData = service.instances.map(instance => instance.size);
         const listColorData = service.instances.map(instance => instance.color);

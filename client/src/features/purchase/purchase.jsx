@@ -17,6 +17,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import image from '../../assets/cloth.jpg';
+import { mediaUrl } from '../../api/constants';
 
 const { Search } = Input;
 
@@ -193,7 +194,9 @@ const Purchase = () => {
   ];
 
   const getDefaultImage = listImage => {
-    return listImage.find(image => image.is_avatar)?.path || image;
+    return listImage.find(image => image.is_avatar)
+      ? `${mediaUrl}/${listImage.find(image => image.is_avatar).name}`
+      : image;
   };
   return (
     <Container width="90%" maxW="none">

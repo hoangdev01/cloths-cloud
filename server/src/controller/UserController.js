@@ -298,7 +298,7 @@ module.exports = {
                 model: Category,
                 attributes: ["name", "description"],
               },
-              { model: Image, attributes: ["is_avatar", "path"] },
+              { model: Image, attributes: ["is_avatar", "path", "name"] },
             ],
           },
         },

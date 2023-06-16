@@ -82,15 +82,17 @@ module.exports = {
       },
     });
 
+    console.log(filename);
+
     await Promise.all(
       filename.map(async (file, index) => {
         console.log(!check_image.length && !index);
         try {
           const newImage = new Image({
             is_avatar: !check_image.length && !index,
-            name: file.key,
+            name: file.filename,
             serviceId: serviceId,
-            path: `${file.location}`,
+            path: `${file.filename}`,
           });
           await newImage.save();
         } catch (error) {

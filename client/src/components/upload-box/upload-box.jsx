@@ -6,6 +6,7 @@ import { Modal, Upload } from 'antd';
 import resourceApi from '../../api/resourceApi';
 import serviceAPI from '../../api/serviceApi';
 import Spinner from 'react-bootstrap/Spinner';
+import { mediaUrl } from '../../api/constants';
 
 const getBase64 = file =>
   new Promise((resolve, reject) => {
@@ -33,7 +34,7 @@ const UploadBox = props => {
         id: props.service.images[i].id,
         filename: `Image ${i}`,
         status: 'done',
-        url: props.service.images[i].path,
+        url: `${mediaUrl}/${props.service.images[i].name}`,
       };
       list.push(temp);
     }
@@ -146,23 +147,6 @@ const UploadBox = props => {
           Upload
         </button>
       </form>
-      {/* <form
-        action="http://localhost:4000/resource/media/"
-        enctype="multipart/form-data"
-        method="post"
-      >
-        <input id="imgInp" type="file" name="media" multiple required />
-        <button
-          type="submit"
-          class="btn btn-primary"
-          // onClick={e => {
-          //   e.preventDefault();
-          //   alert('here');
-          // }}
-        >
-          Upload
-        </button>
-      </form> */}
       <Modal
         visible={previewVisible}
         title={previewTitle}

@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 import { AiFillStar } from 'react-icons/ai';
 import image from '../../assets/cloth.jpg';
+
+import { mediaUrl } from '../../api/constants';
+
 const ServiceCard = ({ item }) => {
   const randomStar = () => {
     return Math.floor(Math.random() * 6) + 1;
@@ -14,7 +17,7 @@ const ServiceCard = ({ item }) => {
 
   if (item.images) {
     for (let img of item.images) {
-      imagePath = img.is_avatar ? img.path : imagePath;
+      imagePath = img.is_avatar ? `${mediaUrl}/${img.name}` : imagePath;
       console.log(imagePath);
     }
   }

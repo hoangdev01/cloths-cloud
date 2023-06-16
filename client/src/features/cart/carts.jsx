@@ -12,6 +12,8 @@ import { CartOrderSummary } from './cartOrderSummary';
 // import { cartData } from './_data.ts';
 import React, { useEffect, useState, useContext } from 'react';
 import CartApi from '../../api/cartApi';
+import { mediaUrl } from '../../api/constants';
+import image from '../../assets/cloth.jpg';
 
 const Carts = () => {
   const [total, setTotal] = useState([]);
@@ -33,8 +35,9 @@ const Carts = () => {
       const name = service?.name ?? null;
       const description = service?.title ?? null;
       const quantity = amount;
-      const imageUrl =
-        service?.images.find(image => image.is_avatar)?.path || null;
+      const imageUrl = service?.images.find(image => image.is_avatar)
+        ? `${mediaUrl}/${service?.images.find(image => image.is_avatar)?.name}`
+        : null;
       const slug = service?.slug;
       const instanceAmount = instance?.amount;
       const color = instance?.color;

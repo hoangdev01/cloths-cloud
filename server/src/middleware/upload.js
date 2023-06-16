@@ -3,6 +3,7 @@ const AWS = require("aws-sdk");
 const multer = require("multer");
 const multerS3 = require("multer-s3-v2");
 const LIMIT_UNEXPECTED_FILE = 10;
+const path = require("path");
 const s3Config = new AWS.S3({
   accessKeyId: process.env.AWS_IAM_USER_KEY,
   secretAccessKey: process.env.AWS_IAM_USER_SECRET,
@@ -19,7 +20,7 @@ const fileFilter = (req, file, cb) => {
 
 const storage = multer.diskStorage({
   destination: (req, res, cb) => {
-    cb(null, "public/upload");
+    cb(null, "src/public/upload");
   },
   filename: (req, file, cb) => {
     const match = ["image/png", "image/jpeg"];
@@ -27,10 +28,7 @@ const storage = multer.diskStorage({
       var message = `${file.originalname} is invalid. Only accept png/jpeg.`;
       return callback(message, null);
     }
-    cb(
-      null,
-      file.fieldname + "-" + Date.now() + "-" + path.extname(file.originalname)
-    );
+    cb(null, Date.now() + "-" + file.originalname);
   },
 });
 
@@ -46,11 +44,11 @@ const multerS3Config = multerS3({
 });
 
 const singleUpload = multer({
-  storage: multerS3Config,
+  storage: storage,
   fileFilter: fileFilter,
 });
 const multipleUpload = multer({
-  storage: multerS3Config,
+  storage: storage,
   fileFilter: fileFilter,
 }).array("media", LIMIT_UNEXPECTED_FILE);
 const simple = multer().single("file");

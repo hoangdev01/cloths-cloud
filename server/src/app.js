@@ -31,6 +31,7 @@ app.use(function (req, res, next) {
   next();
 });
 app.use(express.json());
+app.use("/media", express.static("src/public/upload"));
 //router
 app.use("/service", serviceRouter);
 app.use("/role", roleRouter);
