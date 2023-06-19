@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useMemo } from 'react';
 import {
   Box,
   Container,
@@ -34,8 +34,16 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { url } from '../../api/constants';
 import { LOCAL_STORAGE_ACCESS_TOKEN_NAME } from '../../contexts/constants';
 import notificationApi from '../../api/notificationApi';
-import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
-import { Modal } from 'antd';
+import {
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  RadiusBottomleftOutlined,
+  RadiusBottomrightOutlined,
+  RadiusUpleftOutlined,
+  RadiusUprightOutlined,
+  SmileOutlined,
+} from '@ant-design/icons';
+import { Modal, Divider, Space, notification } from 'antd';
 import { outputUrl, mediaUrl } from '../../api/constants';
 import image from '../../assets/cloth.jpg';
 
@@ -45,6 +53,23 @@ const MenuBar = [
     path: '/cloth-list',
   },
 ];
+const openNotification = () => {
+  notification.open({
+    message: (
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          You just received a new notification
+        </span>
+      </>
+    ),
+    description: 'Click on the notification icon for detailed information.',
+    onClick: () => {
+      console.log('Notification Clicked!');
+    },
+    placement: 'bottomRight',
+    icon: <SmileOutlined style={{ color: '#108ee9' }} />,
+  });
+};
 
 const Header = () => {
   const notificationEntry = {
@@ -143,6 +168,9 @@ const Header = () => {
   useEffect(() => {
     notificationApi.getAll().then(res => {
       if (res.data.success) {
+        res.data.listNotification.sort((a, b) => {
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        });
         setListNotification(res.data.listNotification);
         setUnRead(res.data.unRead);
       }
@@ -154,8 +182,12 @@ const Header = () => {
     eventSource.onmessage = event => {
       notificationApi.getAll().then(res => {
         if (res.data.success) {
+          res.data.listNotification.sort((a, b) => {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+          });
           setListNotification(res.data.listNotification);
           setUnRead(res.data.unRead);
+          openNotification();
         }
       });
     };
