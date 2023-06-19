@@ -18,4 +18,5 @@ module.exports = {
   Instance: require("./Instance"),
   Association: require("./Association"),
   Slugify: require("./Slugify"),
+  Notification: require("./Notification"),
 };

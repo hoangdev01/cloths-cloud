@@ -73,39 +73,24 @@ const ServiceDetail = () => {
     setSelectAmount(newValue);
   };
   const [cart, setCart] = useState([]);
-  const fetchImageAsBlob = async imageUrl => {
-    const response = await fetch(imageUrl);
-    const blob = await response.blob();
-    return blob;
-  };
-  const handleUpload = async ({ file, onSuccess, onError }) => {
-    console.log('formData1');
+
+  const handleUpload = async (info, onSuccess, onError) => {
     const image = service.images.find(image => image.is_avatar);
-    console.log('formData2');
     if (!image) {
       alert('This product has no pictures yet');
       return;
     }
-    console.log('formDat3a');
     const formData = new FormData();
-    console.log('formDat4a');
-    const imageBlob = await fetchImageAsBlob(image.path);
-    console.log('formData5');
-    formData.append('model', file);
-    formData.append('cloth', imageBlob);
-    console.log('formDa6ta');
+    formData.append('file', info);
+    formData.append('cloth', image.name);
+    formData.append('serviceId', service.id);
+    console.log(info);
 
     try {
-      axios
-        .post(`${virtual_url}/api/upload`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        })
-        .then(res => {
-          alert('success');
-          onSuccess();
-        });
+      serviceAPI.mergeImage(formData).then(res => {
+        alert('Image sent, result will send for you soon!');
+        onSuccess();
+      });
       console.log('formData');
     } catch (error) {
       onError(error);

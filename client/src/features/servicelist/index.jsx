@@ -10,6 +10,7 @@ import {
   Icon,
   Flex,
   Tooltip,
+  Image,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import Services from './services';
@@ -28,15 +29,17 @@ function ServiceList(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [isRotating, setIsRotating] = useState(false);
   const [isClicked, setIsClicked] = useState(1);
+  const [searchImage, setSearchImage] = useState(false);
 
   const handleClick = () => {
     setIsRotating(true);
+    setIsLoading(false);
     setIsClicked(isClicked + 1);
     serviceAPI.getServiceList('cloth').then(res => {
-      const list = res.data.serviceList;
       setList(res.data.serviceList);
       setCategoryId(res.data.categoryId);
     });
+    setSearchImage(false);
 
     setTimeout(() => {
       setIsRotating(false);
@@ -58,9 +61,12 @@ function ServiceList(props) {
     showUploadList: false,
     method: 'post',
     onChange(info) {
+      console.log('on change');
+      console.log(ai_url);
       setIsLoading(true);
       // Xử lý logic khi upload
-      const { status } = info.file;
+      const { status, originFileObj } = info.file;
+      setSearchImage(URL.createObjectURL(originFileObj));
       if (status !== 'uploading') {
         console.log('abc');
       }
@@ -88,6 +94,7 @@ function ServiceList(props) {
         }
         setIsLoading(false);
       } else if (status === 'error') {
+        console.log('fail');
         setIsLoading(false);
         message.error(`${info.file.name} file upload failed.`);
       }
@@ -151,7 +158,24 @@ function ServiceList(props) {
                 />
               </Tooltip>
             </Flex>
-            <Dragger {...draggerProps}>
+            {searchImage ? (
+              <Image
+                rounded="lg"
+                width="100%"
+                height="200px"
+                objectFit="contain"
+                src={searchImage}
+                draggable="false"
+                loading="lazy"
+                cursor="pointer"
+                _hover={{ transform: 'scale(1.1)' }}
+                transition="transform 0.1s ease"
+              />
+            ) : null}
+            <Dragger
+              {...draggerProps}
+              style={{ display: searchImage ? 'none' : 'block' }}
+            >
               <p className="ant-upload-drag-icon">
                 <InboxOutlined />
               </p>

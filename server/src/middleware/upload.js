@@ -32,6 +32,20 @@ const storage = multer.diskStorage({
   },
 });
 
+const inputStorage = multer.diskStorage({
+  destination: (req, res, cb) => {
+    cb(null, "src/public/input");
+  },
+  filename: (req, file, cb) => {
+    const match = ["image/png", "image/jpeg"];
+    if (match.indexOf(file.mimetype) === -1) {
+      var message = `${file.originalname} is invalid. Only accept png/jpeg.`;
+      return callback(message, null);
+    }
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
 const multerS3Config = multerS3({
   s3: s3Config,
   bucket: process.env.AWS_BUCKET_NAME,
@@ -53,8 +67,19 @@ const multipleUpload = multer({
 }).array("media", LIMIT_UNEXPECTED_FILE);
 const simple = multer().single("file");
 
+const singleInput = multer({
+  storage: inputStorage,
+  fileFilter: fileFilter,
+});
+const multipleInput = multer({
+  storage: inputStorage,
+  fileFilter: fileFilter,
+}).array("media", LIMIT_UNEXPECTED_FILE);
+
 module.exports = {
   singleUpload,
   multipleUpload,
   simple,
+  multipleInput,
+  singleInput,
 };

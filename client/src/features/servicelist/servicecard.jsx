@@ -18,7 +18,6 @@ const ServiceCard = ({ item }) => {
   if (item.images) {
     for (let img of item.images) {
       imagePath = img.is_avatar ? `${mediaUrl}/${img.name}` : imagePath;
-      console.log(imagePath);
     }
   }
 

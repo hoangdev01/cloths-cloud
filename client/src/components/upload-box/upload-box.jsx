@@ -81,7 +81,7 @@ const UploadBox = props => {
               id: res.data.service.images[i].id,
               filename: `Image ${i}`,
               status: 'done',
-              url: res.data.service.images[i].path,
+              url: `${mediaUrl}/${res.data.service.images[i].name}`,
             });
           }
           setFileList(list);

@@ -16,6 +16,7 @@ const Tag = require("./Tag");
 const User = require("./User");
 const Category = require("./Category");
 const Instance = require("./Instance");
+const Notification = require("./Notification");
 
 // Belongsto index
 // @User
@@ -85,3 +86,9 @@ Tag.hasMany(TagServices, { foreignKey: "tagId", sourceKey: "id" });
 //@Instance
 Instance.belongsTo(Service, { foreignKey: "serviceId", targetKey: "id" });
 Service.hasMany(Instance, { foreignKey: "serviceId", sourceKey: "id" });
+
+//@Notification
+Notification.belongsTo(Account, { foreignKey: "accountId", targetKey: "id" });
+Notification.belongsTo(Service, { foreignKey: "serviceId", targetKey: "id" });
+Service.hasMany(TagServices, { foreignKey: "serviceId", sourceKey: "id" });
+Account.hasMany(TagServices, { foreignKey: "accountId", sourceKey: "id" });

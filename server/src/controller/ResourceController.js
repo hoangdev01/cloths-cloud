@@ -5,6 +5,7 @@ const s3Config = new AWS.S3({
   secretAccessKey: process.env.AWS_IAM_USER_SECRET,
   Bucket: process.env.AWS_BUCKET_NAME,
 });
+const fs = require("fs");
 module.exports = {
   //Index
   avatarIndex: (req, res) => {
@@ -82,11 +83,8 @@ module.exports = {
       },
     });
 
-    console.log(filename);
-
     await Promise.all(
       filename.map(async (file, index) => {
-        console.log(!check_image.length && !index);
         try {
           const newImage = new Image({
             is_avatar: !check_image.length && !index,
@@ -113,12 +111,7 @@ module.exports = {
       if (!image) {
         return res.json({ success: false, message: "Image not found" });
       }
-      s3Config.deleteObject(
-        { Bucket: process.env.AWS_BUCKET_NAME, Key: image.name },
-        (err, data) => {
-          if (err) console.error(err);
-        }
-      );
+      await fs.unlinkSync(`./src/public/upload/${image.name}`);
       await Image.destroy({ where: { id: req.params.id } });
       return res.json({ success: true, message: "Image delete success" });
     } catch (error) {

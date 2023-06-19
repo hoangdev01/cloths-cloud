@@ -50,6 +50,10 @@ const serviceAPI = {
     const requestUrl = url + `/service/${id}`;
     return axiosClient.delete(requestUrl);
   },
+  mergeImage: params => {
+    const requestUrl = url + `/merge-image`;
+    return axiosClient.post(requestUrl, params);
+  },
 };
 
 export default serviceAPI;
