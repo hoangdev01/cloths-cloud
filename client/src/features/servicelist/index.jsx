@@ -43,6 +43,7 @@ function ServiceList(props) {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     serviceAPI.getServiceList('cloth').then(res => {
       const list = res.data.serviceList;
       setList(res.data.serviceList);
