@@ -14,7 +14,7 @@ const {
 module.exports = {
   index: async (req, res) => {
     try {
-      const listBill = await Bill.findAll();
+      const listBill = await Bill.findAll({ include: User });
       res.json({
         success: true,
         listBill,
@@ -58,7 +58,7 @@ module.exports = {
       });
       if (userAccount.user.id != bill.userId) {
         checkCondition = false;
-        userAccount.RoleAccounts.forEach((item) => {
+        userAccount?.role_accounts?.forEach((item) => {
           if (item.role.name == "employee" || item.role.name == "admin") {
             checkCondition = true;
           }
@@ -244,7 +244,7 @@ module.exports = {
       var checkCondition = true;
       if (userAccount.user.id != bill.userId) {
         checkCondition = false;
-        userAccount.role_accounts.forEach((item) => {
+        userAccount?.role_accounts?.forEach((item) => {
           if (item.role.name == "employee" || item.role.name == "admin") {
             checkCondition = true;
           }

@@ -4,6 +4,7 @@ const { validationResult } = require("express-validator");
 const { Account, User, Role, RoleAccounts } = require("../model");
 const nodemailer = require("nodemailer");
 const emailCheck = require("email-check");
+const EmailTemplate = require("../template/EmailTemplate");
 
 const generateToken = (payload) => {
   const { id, username } = payload;
@@ -103,10 +104,7 @@ module.exports = {
         from: `${process.env.ADMIN_EMAIL_NAME}`,
         to: email,
         subject: "Account activation Link",
-        html: `
-        <h2>Please click on given link to active your account</h2>
-        <a href="${process.env.CLIENT_URL}/verify-token/${token}">link</a>
-      `,
+        html: EmailTemplate(token),
       };
 
       transporter.sendMail(mailOptions, function (error, info) {
