@@ -429,99 +429,103 @@ const Header = () => {
 
                 <Box minW={'185px'} px={'15px'}>
                   <Box ml={'auto'} display={'flex'}>
-                    <Menu closeOnSelect={false}>
-                      <MenuButton>
-                        <Box
-                          shadow={'0 16px 32px 0 rgba(7, 28, 31, 0.1)'}
-                          bgColor={'white'}
-                          color={'#071c1f'}
-                          minW={'25px'}
-                          h={'50px'}
-                          w={'50px'}
-                          transition={'all 0.3s linear'}
-                          cursor={'pointer'}
-                          display={'flex'}
-                          alignItems={'center'}
-                          justifyContent={'center'}
-                          rounded={'100%'}
-                          _hover={{
-                            // color: 'white',
-                            backgroundColor: '#d0d3d6',
-                          }}
-                          position="relative"
-                          as={Button}
-                        >
-                          <AiOutlineBell size={26} />
-                          {unRead ? (
-                            <Badge
-                              position="absolute"
-                              top="-6px"
-                              right="-6px"
-                              bg="red"
-                              color="white"
-                              borderRadius="50%"
-                              fontSize="xs"
-                              fontWeight="bold"
-                              px={2}
-                              py={1}
-                              isOpen={unRead != 0}
-                            >
-                              {unRead}
-                            </Badge>
-                          ) : null}
-                        </Box>
-                      </MenuButton>
-                      <MenuList color={'black'} minW="300px">
-                        <Box maxH="200px" overflowY="auto">
-                          {listNotification.length > 0
-                            ? listNotification.map(item => (
-                                <>
-                                  <MenuItem
-                                    minH="56px" // Tăng chiều cao
-                                    display="flex"
-                                    alignItems="center"
-                                    _hover={{ bg: 'gray.300' }} // Background xám khi hover
-                                    bg={
-                                      !item.status ? 'gray.200' : 'transparent'
-                                    }
-                                    onClick={() =>
-                                      handleNotificationClick(item)
-                                    }
-                                  >
-                                    <span>
-                                      <strong>{item.description}</strong>
-                                      <br />
-                                      <small style={{ fontStyle: 'italic' }}>
-                                        {formatDate(item.createdAt)}
-                                      </small>
-                                    </span>
-                                    {item.tag == 'fail' ? (
-                                      <CloseCircleOutlined
-                                        size={50}
-                                        style={{
-                                          fontSize: '24px',
-                                          color: 'red',
-                                          marginLeft: 'auto',
-                                        }}
-                                      />
-                                    ) : (
-                                      <CheckCircleOutlined
-                                        size={50}
-                                        style={{
-                                          fontSize: '24px',
-                                          color: 'green',
-                                          marginLeft: 'auto',
-                                        }}
-                                      />
-                                    )}
-                                  </MenuItem>
-                                  <hr />
-                                </>
-                              ))
-                            : null}
-                        </Box>
-                      </MenuList>
-                    </Menu>
+                    {isAuthenticated ? (
+                      <Menu>
+                        <MenuButton>
+                          <Box
+                            shadow={'0 16px 32px 0 rgba(7, 28, 31, 0.1)'}
+                            bgColor={'white'}
+                            color={'#071c1f'}
+                            minW={'25px'}
+                            h={'50px'}
+                            w={'50px'}
+                            transition={'all 0.3s linear'}
+                            cursor={'pointer'}
+                            display={'flex'}
+                            alignItems={'center'}
+                            justifyContent={'center'}
+                            rounded={'100%'}
+                            _hover={{
+                              // color: 'white',
+                              backgroundColor: '#d0d3d6',
+                            }}
+                            position="relative"
+                            as={Button}
+                          >
+                            <AiOutlineBell size={26} />
+                            {unRead ? (
+                              <Badge
+                                position="absolute"
+                                top="-6px"
+                                right="-6px"
+                                bg="red"
+                                color="white"
+                                borderRadius="50%"
+                                fontSize="xs"
+                                fontWeight="bold"
+                                px={2}
+                                py={1}
+                                isOpen={unRead != 0}
+                              >
+                                {unRead}
+                              </Badge>
+                            ) : null}
+                          </Box>
+                        </MenuButton>
+                        <MenuList color={'black'} minW="300px">
+                          <Box maxH="200px" overflowY="auto">
+                            {listNotification.length > 0
+                              ? listNotification.map(item => (
+                                  <>
+                                    <MenuItem
+                                      minH="56px" // Tăng chiều cao
+                                      display="flex"
+                                      alignItems="center"
+                                      _hover={{ bg: 'gray.300' }} // Background xám khi hover
+                                      bg={
+                                        !item.status
+                                          ? 'gray.200'
+                                          : 'transparent'
+                                      }
+                                      onClick={() =>
+                                        handleNotificationClick(item)
+                                      }
+                                    >
+                                      <span>
+                                        <strong>{item.description}</strong>
+                                        <br />
+                                        <small style={{ fontStyle: 'italic' }}>
+                                          {formatDate(item.createdAt)}
+                                        </small>
+                                      </span>
+                                      {item.tag == 'fail' ? (
+                                        <CloseCircleOutlined
+                                          size={50}
+                                          style={{
+                                            fontSize: '24px',
+                                            color: 'red',
+                                            marginLeft: 'auto',
+                                          }}
+                                        />
+                                      ) : (
+                                        <CheckCircleOutlined
+                                          size={50}
+                                          style={{
+                                            fontSize: '24px',
+                                            color: 'green',
+                                            marginLeft: 'auto',
+                                          }}
+                                        />
+                                      )}
+                                    </MenuItem>
+                                    <hr />
+                                  </>
+                                ))
+                              : null}
+                          </Box>
+                        </MenuList>
+                      </Menu>
+                    ) : null}
                     <Box position={'relative'}>
                       <Box
                         mx={'15px'}
