@@ -178,6 +178,17 @@ function ServiceList(props) {
                 />
               </Tooltip>
             </Flex>
+            <Search
+              allowClear
+              className="search"
+              placeholder="Input search text"
+              enterButton
+              onSearch={searchClick}
+              value={searchValue}
+              onChange={searchChange}
+            />
+            <br />
+            <hr />
             {searchImage ? (
               <Image
                 rounded="lg"
@@ -192,18 +203,7 @@ function ServiceList(props) {
                 transition="transform 0.1s ease"
               />
             ) : null}
-            <Search
-              allowClear
-              className="search"
-              placeholder="Input search text"
-              enterButton
-              onSearch={searchClick}
-              value={searchValue}
-              onChange={searchChange}
-            />
 
-            <br />
-            <hr />
             <Dragger
               {...draggerProps}
               style={{ display: searchImage ? 'none' : 'block' }}
