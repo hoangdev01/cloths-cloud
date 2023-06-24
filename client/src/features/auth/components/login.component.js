@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,7 +9,9 @@ function Login(props) {
     loginUser,
     authState: { role },
   } = useContext(AuthContext);
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const {} = useContext(AuthContext);
 
   const navigate = useNavigate();

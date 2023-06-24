@@ -3,12 +3,8 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import GroupIcon from '@mui/icons-material/Group';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety';
-import PsychologyIcon from '@mui/icons-material/Psychology';
-import SettingsIcon from '@mui/icons-material/Settings';
 import PersonIcon from '@mui/icons-material/Person';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { Link } from '@chakra-ui/react';
@@ -22,7 +18,14 @@ const Sidebar = () => {
       <hr />
       <div className="center">
         <ul>
-          <p className="title">MAIN MENU</p>
+          <p className="title">SERVICES</p>
+          <Link href="/admin/cloth">
+            <li>
+              <HealthAndSafetyIcon className="icon" />
+              <span>Cloth</span>
+            </li>
+          </Link>
+          <p className="title">Dashboard</p>
           <Link href="/admin/dashboard">
             <li>
               <DashboardIcon className="icon" />
@@ -48,13 +51,6 @@ const Sidebar = () => {
               <span>Bills</span>
             </li>
           </Link>
-          <p className="title">SERVICES</p>
-          <Link href="/admin/cloth">
-            <li>
-              <HealthAndSafetyIcon className="icon" />
-              <span>Cloth</span>
-            </li>
-          </Link>
           <p className="title">Event</p>
           <Link href="/admin/event">
             <li>
@@ -70,12 +66,12 @@ const Sidebar = () => {
             </li>
           </Link>
           <p className="title">ACCOUNT</p>
-          <Link href="/admin/profile">
+          {/* <Link href="/admin/profile">
             <li>
               <PersonIcon className="icon" />
               <span>Profile</span>
             </li>
-          </Link>
+          </Link> */}
           <Link href="/logout">
             <li>
               <ExitToAppIcon className="icon" />

@@ -6,8 +6,6 @@ import UserManager from './components/usermanager/UserManager';
 import EmployeeManager from './components/employeemanager/EmployeeManager';
 import BillManager from './components/billmanager/BillManager';
 import ClothManager from './components/clothmanager/ClothManager';
-// import HotelManager from './components/hotelmanager/HotelManager';
-// import CarManager from './components/carmanager/CarManager';
 import EventManager from './components/eventmanager/EventManager';
 import TagManager from './components/tagmanager/TagManager';
 import ProfileManager from './components/profilemanager/ProfileManager';
@@ -40,12 +38,10 @@ const Amin = ({ adminRoute }) => {
     else if (adminRoute === 'employee') content = <EmployeeManager />;
     else if (adminRoute === 'bill') content = <BillManager />;
     else if (adminRoute === 'cloth') content = <ClothManager />;
-    // else if (adminRoute === 'hotel') content = <HotelManager />;
-    // else if (adminRoute === 'car') content = <CarManager />;
     else if (adminRoute === 'event') content = <EventManager />;
     else if (adminRoute === 'tag') content = <TagManager />;
     else if (adminRoute === 'profile') content = <ProfileManager />;
-    else content = <Statistical />;
+    else content = <ClothManager />;
 
     body = (
       <div className="home">

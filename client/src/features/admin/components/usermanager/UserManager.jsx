@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import userApi from '../../../../api/userApi';
 import './usermanager.scss';
 import 'antd/dist/antd.css';
-import { ClassNames } from '@emotion/react';
-import moment from 'moment';
-import { Table, Space, Input, Modal, Button } from 'antd';
+import { Table, Space, Input, Modal, message } from 'antd';
 
 const { Search } = Input;
 
 const UserManager = () => {
-
   const [successStatus, setSuccessStatus] = useState('');
 
   const [listUser, setListUser] = useState([]);
@@ -21,7 +17,8 @@ const UserManager = () => {
   const [isModalUpdateVisible, setIsModalUpdateVisible] = useState(false);
   const [isModalDeleteVisible, setIsModalDeleteVisible] = useState(false);
   const [modelCurrentAction, setModelCurrentAction] = useState({});
-  const { name, active, phone_number, gender, date_of_birth } = modelCurrentAction;
+  const { name, active, phone_number, gender, date_of_birth } =
+    modelCurrentAction;
   const [actionChange, setActionChange] = useState(true);
   // const {name}
   useEffect(() => {
@@ -53,13 +50,14 @@ const UserManager = () => {
   };
   const handleUpdateOk = () => {
     userApi
-      .UserToEmployee({userId: modelCurrentAction.id})
+      .UserToEmployee({ userId: modelCurrentAction.id })
       .then(response => {
         if (response.data.success) {
-          alert('Update user successful');
+          message.success('Update user successful');
           setActionChange(!actionChange);
           setIsModalUpdateVisible(false);
-        } else setSuccessStatus('Cannot get to update user',response.data.message);
+        } else
+          setSuccessStatus('Cannot get to update user', response.data.message);
       })
       .catch(error => {
         console.log(error);
@@ -77,18 +75,19 @@ const UserManager = () => {
   };
   const handleDeleteOk = () => {
     userApi
-    .activeUser({userId: modelCurrentAction.id})
-    .then(response => {
-      if (response.data.success) {
-        alert('Update user successful');
-        setActionChange(!actionChange);
-        setIsModalDeleteVisible(false);
-      } else setSuccessStatus('Cannot get to update user',response.data.message);
-    })
-    .catch(error => {
-      console.log(error);
-      setSuccessStatus('Can not update user');
-    }); 
+      .activeUser({ userId: modelCurrentAction.id })
+      .then(response => {
+        if (response.data.success) {
+          message.success('Update user successful');
+          setActionChange(!actionChange);
+          setIsModalDeleteVisible(false);
+        } else
+          setSuccessStatus('Cannot get to update user', response.data.message);
+      })
+      .catch(error => {
+        console.log(error);
+        setSuccessStatus('Can not update user');
+      });
   };
   const handleDeleteCancel = () => {
     setIsModalDeleteVisible(false);
@@ -179,13 +178,13 @@ const UserManager = () => {
           </button>
           <button
             type="button"
-            class={record.active ? "btn btn-danger" : "btn btn-info"}
+            class={record.active ? 'btn btn-danger' : 'btn btn-info'}
             onClick={() => {
               setModelCurrentAction(record);
               showDeleteModal();
             }}
           >
-            {record.active ? "Unactive" : "Active"}
+            {record.active ? 'Unactive' : 'Active'}
           </button>
         </Space>
       ),
@@ -228,14 +227,14 @@ const UserManager = () => {
         <div class="form-group">
           <label for="name">Phone number: </label>
           <input
-            type="text" readonly
+            type="text"
+            readonly
             class="form-control"
             id="phone_number"
             value={modelCurrentAction.phone_number}
             disabled
           ></input>
         </div>
-        
 
         <label>Gender: </label>
         <select
@@ -246,8 +245,8 @@ const UserManager = () => {
           value={modelCurrentAction.gender}
           disabled
         >
-          <option value="nam">Nam</option>
-          <option value="nu">Nữ</option>
+          <option value="nam">Male</option>
+          <option value="nu">Female</option>
         </select>
 
         <div class="date">
@@ -270,7 +269,7 @@ const UserManager = () => {
       >
         <p>ARE YOU SURE TO CHANGE {name} INTO EMPLOYEE'S ROLE</p>
         <div class="form-group">
-        <label for="id">ID: </label>
+          <label for="id">ID: </label>
           <input
             type="text"
             readonly
@@ -294,7 +293,6 @@ const UserManager = () => {
           ></input>
         </div>
 
-
         <div class="form-group">
           <i style={{ color: 'red' }}>{successStatus}</i>
         </div>
@@ -305,7 +303,10 @@ const UserManager = () => {
         onOk={handleDeleteOk}
         onCancel={handleDeleteCancel}
       >
-        <p>ARE YOU SURE TO {modelCurrentAction.active ? ("UNACTIVE") : ("ACTIVE")} {name} </p>
+        <p>
+          ARE YOU SURE TO {modelCurrentAction.active ? 'UNACTIVE' : 'ACTIVE'}{' '}
+          {name}{' '}
+        </p>
         <div class="form-group">
           <label for="name">ID: </label>
           <input

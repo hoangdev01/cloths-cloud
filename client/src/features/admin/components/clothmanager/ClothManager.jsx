@@ -14,6 +14,7 @@ import {
   Col,
   InputNumber,
   Button,
+  message,
 } from 'antd';
 import 'antd/dist/antd.css';
 import moment from 'moment';
@@ -76,7 +77,7 @@ const ClothManager = () => {
   const renderRecommenData = () => {
     axios.post(`${ai_url}/render`).then(res => {
       if (res.data.success) {
-        alert('Render successful');
+        message.success('Render successful');
       }
     });
   };
@@ -103,7 +104,7 @@ const ClothManager = () => {
       .then(response => {
         if (response.data.success) {
           setModelCurrentAction(entryModal);
-          alert('Add service successful');
+          message.success('Add service successful');
           setActionChange(!actionChange);
           setIsModalAddVisible(false);
         } else setSuccessStatus(response.data.message);
@@ -141,7 +142,7 @@ const ClothManager = () => {
       .then(response => {
         if (response.data.success) {
           setModelCurrentAction(entryModal);
-          alert('Service update successful');
+          message.success('Service update successful');
           setActionChange(!actionChange);
           setIsModalUpdateVisible(false);
         } else setSuccessStatus(response.data.message);
@@ -159,7 +160,7 @@ const ClothManager = () => {
       .then(response => {
         if (response.data.success) {
           setModelCurrentAction(entryModal);
-          alert('Service deleted successful');
+          message.success('Service deleted successful');
           setActionChange(!actionChange);
           setIsModalDeleteVisible(false);
         } else setSuccessStatus(response.data.message);
@@ -176,7 +177,7 @@ const ClothManager = () => {
   };
   const handleInstanceOk = () => {
     if (hasNullZeroEmpty(listInstanceCurrentAction)) {
-      alert('Product details cannot leave the attribute blank');
+      message.warning('Product details cannot leave the attribute blank');
       return;
     }
 
@@ -194,7 +195,7 @@ const ClothManager = () => {
       .then(response => {
         if (response.data.success) {
           setModelCurrentAction(entryModal);
-          alert('Service features create successful');
+          message.success('Service features create successful');
           setActionChange(!actionChange);
           setIsModalInstanceVisible(false);
         } else setSuccessStatus(response.data.message);

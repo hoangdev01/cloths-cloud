@@ -1,136 +1,164 @@
-import { Box, Container, List, ListIcon, ListItem, Text } from '@chakra-ui/react'
-import React from 'react'
-import {ImPhone} from 'react-icons/im'
-import {IoMdMail} from 'react-icons/io'
-import {AiFillHome} from 'react-icons/ai'
+import {
+  Box,
+  Container,
+  List,
+  ListIcon,
+  ListItem,
+  Text,
+} from '@chakra-ui/react';
+import React from 'react';
+import { ImPhone } from 'react-icons/im';
+import { IoMdMail } from 'react-icons/io';
+import { AiFillHome } from 'react-icons/ai';
 
 const footerAboutLinks = [
-    {
-        display: "Giới thiệu",
-        path: "/about"
-    },
-    {
-        display: "Liên hệ",
-        path: "/about"
-    },
-    {
-        display: "Tuyển dụng",
-        path: "/about"
-    },
-    {
-        display: "Tin tức",
-        path: "/about"
-    }
-
-]
+  {
+    display: 'About',
+    path: '/about',
+  },
+  {
+    display: 'Contact',
+    path: '/about',
+  },
+  {
+    display: 'Hire',
+    path: '/about',
+  },
+  {
+    display: 'Information',
+    path: '/about',
+  },
+];
 const footerCustomerLinks = [
-    {
-        display: "Đăng ký nhà cung cấp",
-        path: "/about"
-    },
-    {
-        display: "Đối tác liên kết",
-        path: "/about"
-    },
-    {
-        display: "Chương trình cho người nổi tiếng",
-        path: "/about"
-    },
-    {
-        display: "Chương trình cho đại lý",
-        path: "/about"
-    },
-    {
-        display: "Hợp tác marketing & phân phối",
-        path: "/about"
-    }
-]
+  {
+    display: 'Supplier registration',
+    path: '/about',
+  },
+  {
+    display: 'Affiliate partner',
+    path: '/about',
+  },
+  {
+    display: 'Celebrity show',
+    path: '/about',
+  },
+  {
+    display: 'Dealer Program',
+    path: '/about',
+  },
+  {
+    display: 'Marketing & distribution cooperation',
+    path: '/about',
+  },
+];
 
 const footerRuleLinks = [
-    {
-        display: "Điều khoản sử dụng",
-        path: "/about"
-    },
-    {
-        display: "Chính sách bảo mật",
-        path: "/about"
-    },
-    {
-        display: "Chính sách Cookie",
-        path: "/about"
-    },
-    {
-        display: "Chương trình thưởng phát hiện lỗi phần mềm",
-        path: "/about"
-    },
-    {
-        display: "Chính sách và quy định",
-        path: "/about"
-    }
-]
+  {
+    display: 'Terms of use',
+    path: '/about',
+  },
+  {
+    display: 'Privacy Policy',
+    path: '/about',
+  },
+  {
+    display: 'Cookie Policy',
+    path: '/about',
+  },
+  {
+    display: 'Software bug detection bonus program',
+    path: '/about',
+  },
+  {
+    display: 'Policies and regulations',
+    path: '/about',
+  },
+];
 const Footer = () => {
   return (
-    <Container maxW={"full"} bgColor={"whitesmoke"} mt={"110px"} pb={"100px"}>
-        <Box maxW={"1200px"} px={"15px"} pt={"120px"} display="flex" flexDir={"column"} m={"auto"}>
-            <Box w={"full"}>
-                <Box display="flex" justifyContent={"space-around"}>
-                    <Box w={"25%"}>
-                        <Text fontWeight={"700"} fontSize={"20px"} color={"var(--text-color)"}>CONTACT</Text>
-                    
-                        <List spacing={4} mt={"20px"}>
-                            <ListItem cursor={"pointer"} _hover={{
-                                color: "var(--primary-color)"                                
-                            }}>
-                                <ListIcon as={ImPhone} color='var(--primary-color)' />
-                                + 92 666 999 0000
-                            </ListItem>
-                            <ListItem cursor={"pointer"} _hover={{
-                                color: "var(--primary-color)"
-                            }} >
-                                <ListIcon  as={IoMdMail} color='var(--primary-color)' />
-                                Klook@gmail.com
-                            </ListItem>
-                            <ListItem cursor={"pointer"} _hover={{
-                                color: "var(--primary-color)"
-                            }} >
-                                <ListIcon  as={AiFillHome} color='var(--primary-color)' />
-                                63 Nguyễn Lương Bằng, Đà Nẵng.
-                            </ListItem>                                
-                        </List>
-                    </Box>
-                    <Box w={"25%"}>
-                        <Text fontWeight={"700"} fontSize={"20px"} color={"var(--text-color)"}>VỀ cloths cloud</Text>
-                    
-                        <List spacing={4} mt={"20px"}>
-                            {footerAboutLinks.map((item, index) => (
-                                <ListItem cursor={"pointer"}>{item.display}</ListItem>
-                            ))}                               
-                        </List>
-                    </Box>  
-                    <Box w={"25%"}>
-                        <Text fontWeight={"700"} fontSize={"20px"} color={"var(--text-color)"}>ĐỐI TÁC</Text>
-                    
-                        <List spacing={4} mt={"20px"}>
-                            {footerCustomerLinks.map((item, index) => (
-                                <ListItem cursor={"pointer"}>{item.display}</ListItem>
-                            ))}                               
-                        </List>
-                    </Box>                  
-                    <Box w={"25%"}>
-                        <Text fontWeight={"700"} fontSize={"20px"} color={"var(--text-color)"}>ĐIỀU KHOẢN SỬ DỤNG</Text>
-                    
-                        <List spacing={4} mt={"20px"}>
-                            {footerRuleLinks.map((item, index) => (
-                                <ListItem cursor={"pointer"}>{item.display}</ListItem>
-                            ))}                               
-                        </List>
-                    </Box> 
-                </Box>
-            </Box>
-        </Box>                          
-    </Container>
-    
-  )
-}
+    <Container maxW={'full'} bgColor={'#191970'} mt={'110px'} pb={'100px'}>
+      <Box
+        maxW={'1200px'}
+        px={'15px'}
+        pt={'120px'}
+        display="flex"
+        flexDir={'column'}
+        m={'auto'}
+      >
+        <Box w={'full'}>
+          <Box display="flex" justifyContent={'space-around'}>
+            <Box w={'25%'}>
+              <Text fontWeight={'700'} fontSize={'20px'} color={'white'}>
+                CONTACT
+              </Text>
 
-export default Footer
+              <List spacing={4} mt={'20px'} color={'white'}>
+                <ListItem
+                  cursor={'pointer'}
+                  _hover={{
+                    color: 'white',
+                  }}
+                >
+                  <ListIcon as={ImPhone} color="white" />+ 92 666 999 0000
+                </ListItem>
+                <ListItem
+                  cursor={'pointer'}
+                  _hover={{
+                    color: 'white',
+                  }}
+                >
+                  <ListIcon as={IoMdMail} color="white" />
+                  clothscloud@gmail.com
+                </ListItem>
+                <ListItem
+                  cursor={'pointer'}
+                  _hover={{
+                    color: 'white',
+                  }}
+                >
+                  <ListIcon as={AiFillHome} color="white" />
+                  63 Nguyễn Lương Bằng, Đà Nẵng.
+                </ListItem>
+              </List>
+            </Box>
+            <Box w={'25%'}>
+              <Text fontWeight={'700'} fontSize={'20px'} color={'white'}>
+                About cloths cloud
+              </Text>
+
+              <List spacing={4} mt={'20px'} color={'white'}>
+                {footerAboutLinks.map((item, index) => (
+                  <ListItem cursor={'pointer'}>{item.display}</ListItem>
+                ))}
+              </List>
+            </Box>
+            <Box w={'25%'}>
+              <Text fontWeight={'700'} fontSize={'20px'} color={'white'}>
+                PARTNER
+              </Text>
+
+              <List spacing={4} mt={'20px'} color={'white'}>
+                {footerCustomerLinks.map((item, index) => (
+                  <ListItem cursor={'pointer'}>{item.display}</ListItem>
+                ))}
+              </List>
+            </Box>
+            <Box w={'25%'}>
+              <Text fontWeight={'700'} fontSize={'20px'} color={'white'}>
+                TERMS OF USE
+              </Text>
+
+              <List spacing={4} mt={'20px'} color={'white'}>
+                {footerRuleLinks.map((item, index) => (
+                  <ListItem cursor={'pointer'}>{item.display}</ListItem>
+                ))}
+              </List>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+    </Container>
+  );
+};
+
+export default Footer;

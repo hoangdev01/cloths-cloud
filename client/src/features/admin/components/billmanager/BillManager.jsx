@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import billApi from '../../../../api/billApi';
 import './billmanager.scss';
 import moment from 'moment';
-import { Table, Space, Input, Modal, Button } from 'antd';
+import { Table, Space, Input, Modal, Button, message } from 'antd';
 
 import {
   Center,
@@ -16,6 +16,8 @@ import {
 } from '@chakra-ui/react';
 import image from '../../../../assets/cloth.jpg';
 import { mediaUrl } from '../../../../api/constants';
+import copy from 'copy-to-clipboard';
+
 const { Search } = Input;
 
 const BillManager = () => {
@@ -73,8 +75,8 @@ const BillManager = () => {
   const handleConfirmOk = () => {
     if (modelCurrentAction.id)
       billApi.confirm({ billId: modelCurrentAction.id }).then(res => {
-        if (res.data.success) alert('This bill is confirmed');
-        else alert('Can not confirm this bill');
+        if (res.data.success) message.success('This bill is confirmed');
+        else message.success('Can not confirm this bill');
         billApi
           .getAll()
           .then(response => {
@@ -96,8 +98,8 @@ const BillManager = () => {
   const handleCancelOk = () => {
     if (modelCurrentAction.id)
       billApi.cancel({ billId: modelCurrentAction.id }).then(res => {
-        if (res.data.success) alert('This bill is canceled');
-        else alert('Can not cancel this bill');
+        if (res.data.success) message.success('This bill is canceled');
+        else message.success('Can not cancel this bill');
         billApi
           .getAll()
           .then(response => {
@@ -117,8 +119,15 @@ const BillManager = () => {
     {
       title: 'User id',
       dataIndex: 'userId',
-      render: text => String(text),
+      render: (text, record) => record.user.name || 'Unknow',
       sorter: (a, b) => a.userId - b.userId,
+      onCell: record => ({
+        title: 'Click to copy user ID',
+        onClick: () => {
+          copy(record.userId.toString());
+          message.success('User id copied!');
+        },
+      }),
     },
     {
       title: 'Total price',
@@ -195,7 +204,9 @@ const BillManager = () => {
           </button>
           <button
             type="button"
-            class="btn btn-success"
+            className={`btn btn-success ${
+              record.status === 'paid' ? 'hidden-button' : ''
+            }`}
             onClick={() => {
               setModelCurrentAction(record);
               showConfirmModal();
@@ -205,7 +216,9 @@ const BillManager = () => {
           </button>
           <button
             type="button"
-            class="btn btn-secondary"
+            className={`btn btn-secondary ${
+              record.status === 'cancelled' ? 'hidden-button' : ''
+            }`}
             onClick={() => {
               setModelCurrentAction(record);
               showCancelModal();
@@ -280,7 +293,7 @@ const BillManager = () => {
                       Size: {item.instance?.size || 'no data'}
                     </Text>
                     <Text fontWeight={600} color={'gray.500'} size="sm" mb={4}>
-                      Amount: {item.instance?.amount || 'no data'}
+                      Amount: {item.amount || 'no data'}
                     </Text>
                   </Stack>
                 </Stack>

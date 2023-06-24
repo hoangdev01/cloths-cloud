@@ -11,14 +11,14 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Box,
   Text,
   Button,
 } from '@chakra-ui/react';
 import { PriceTag } from './priceTag';
 import { CartProductMeta } from './cartProductMeta';
 import CartApi from '../../api/cartApi';
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useState } from 'react';
+import { message } from 'antd';
 
 const QuantitySelect = props => {
   const { instanceId, setData } = props;
@@ -33,7 +33,7 @@ const QuantitySelect = props => {
       .then(response => {
         if (response.data.success) {
           setData();
-        } else alert('Add service to cart fail');
+        } else message.success('Add service to cart fail');
       })
       .catch(err => {
         console.log(err);

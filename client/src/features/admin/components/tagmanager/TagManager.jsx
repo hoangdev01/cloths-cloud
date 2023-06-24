@@ -4,7 +4,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import tagApi from '../../../../api/tagApi';
 import { useState, useEffect } from 'react';
-import { Table, Space, Input, Modal, Button } from 'antd';
+import { Table, Space, Input, Modal, Button, message } from 'antd';
 import 'antd/dist/antd.css';
 import moment from 'moment';
 import UploadBox from '../../../../components/upload-box/upload-box';
@@ -49,7 +49,7 @@ const TagManager = () => {
     setModelCurrentAction(entryModal);
   };
   const handleAddOk = async () => {
-    if (name == '' || description == '' ) {
+    if (name == '' || description == '') {
       setSuccessStatus('Not enough infomation');
       return;
     }
@@ -61,7 +61,7 @@ const TagManager = () => {
       .then(response => {
         if (response.data.success) {
           setModelCurrentAction(entryModal);
-          alert('Add tag successfully');
+          message.success('Add tag successfully');
           setActionChange(!actionChange);
           setIsModalAddVisible(false);
         } else setSuccessStatus(response.data.message);
@@ -81,7 +81,7 @@ const TagManager = () => {
     setIsModalUpdateVisible(true);
   };
   const handleUpdateOk = () => {
-    if (name == '' || description == '' ) {
+    if (name == '' || description == '') {
       setSuccessStatus('Not enough infomation');
       return;
     }
@@ -93,7 +93,7 @@ const TagManager = () => {
       .then(response => {
         if (response.data.success) {
           setModelCurrentAction(entryModal);
-          alert('Updated tag successfully');
+          message.success('Updated tag successfully');
           setActionChange(!actionChange);
           setIsModalUpdateVisible(false);
         } else setSuccessStatus(response.data.message);
@@ -111,7 +111,7 @@ const TagManager = () => {
       .then(response => {
         if (response.data.success) {
           setModelCurrentAction(entryModal);
-          alert('Service deleted successful');
+          message.success('Service deleted successful');
           setActionChange(!actionChange);
           setIsModalDeleteVisible(false);
         } else setSuccessStatus(response.data.message);
@@ -237,7 +237,7 @@ const TagManager = () => {
             onChange={onchangeModelCurrentAction}
           ></input>
         </div>
-        
+
         <div class="form-group">
           <label for="name">Description: </label>
           <textarea

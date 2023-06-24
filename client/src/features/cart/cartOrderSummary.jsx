@@ -10,6 +10,7 @@ import {
 import { FaArrowRight } from 'react-icons/fa';
 import { formatPrice } from './priceTag';
 import BillApi from '../../api/billApi';
+import { message } from 'antd';
 
 const OrderSummaryItem = props => {
   const { label, value, children } = props;
@@ -27,12 +28,17 @@ export const CartOrderSummary = props => {
   const { total, listCartId, setData } = props;
 
   const handleCreateBill = () => {
+    if (!listCartId || !listCartId.length) {
+      message.error('Can not checkout empty cart');
+      return;
+    }
+
     BillApi.create({ listCartId: listCartId }).then(res => {
       if (res.data.success) {
-        alert(
+        message.success(
           'You have successfully booked the service. The system will contact you now.'
         );
-      } else alert('Create bill fail.');
+      } else message.error('Create bill fail.');
       setData();
     });
   };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import userApi from '../../../../api/userApi';
-import { Table, Space, Input, Modal, Button } from 'antd';
+import { Table, Space, Input, Modal, Button, message } from 'antd';
 
 import './employeemanager.scss';
 import 'antd/dist/antd.css';
@@ -11,10 +11,9 @@ import BookmarksIcon from '@mui/icons-material/Bookmarks';
 const { Search } = Input;
 
 const EmployeeManager = () => {
-
   const [successStatus, setSuccessStatus] = useState('');
   const [listEmployee, setListEmployee] = useState([]);
-  const [listEmployeeAll, setListEmployeeAll] = useState([]); 
+  const [listEmployeeAll, setListEmployeeAll] = useState([]);
   const [searchValue, setSearchValue] = useState('');
 
   const [actionChange, setActionChange] = useState(true);
@@ -36,7 +35,6 @@ const EmployeeManager = () => {
       });
   }, [actionChange]);
 
-
   const showShowModal = () => {
     setIsModalShowVisible(true);
   };
@@ -45,29 +43,31 @@ const EmployeeManager = () => {
   };
   const handleShowCancel = () => {
     setIsModalShowVisible(false);
-
   };
 
   const showUpdateModal = () => {
     setSuccessStatus('');
     setIsModalUpdateVisible(true);
-    
   };
   const handleUpdateOk = () => {
     // setIsModalUpdateVisible(false);
     userApi
-    .EmployeeToUser({userId: modelCurrentAction.id})
-    .then(response => {
-      if (response.data.success) {
-        alert('Update user successful');
-        setActionChange(!actionChange);
-        setIsModalUpdateVisible(false);
-      } else setSuccessStatus('Cannot get to update employee',response.data.message);
-    })
-    .catch(error => {
-      console.log(error);
-      setSuccessStatus('Can not update employee');
-    });
+      .EmployeeToUser({ userId: modelCurrentAction.id })
+      .then(response => {
+        if (response.data.success) {
+          message.success('Update user successful');
+          setActionChange(!actionChange);
+          setIsModalUpdateVisible(false);
+        } else
+          setSuccessStatus(
+            'Cannot get to update employee',
+            response.data.message
+          );
+      })
+      .catch(error => {
+        console.log(error);
+        setSuccessStatus('Can not update employee');
+      });
   };
   const handleUpdateCancel = () => {
     setIsModalUpdateVisible(false);
@@ -80,18 +80,19 @@ const EmployeeManager = () => {
   };
   const handleDeleteOk = () => {
     userApi
-    .activeUser({userId: modelCurrentAction.id})
-    .then(response => {
-      if (response.data.success) {
-        alert('Update user successful');
-        setActionChange(!actionChange);
-        setIsModalDeleteVisible(false);
-      } else setSuccessStatus('Cannot get to update user',response.data.message);
-    })
-    .catch(error => {
-      console.log(error);
-      setSuccessStatus('Can not update user');
-    });
+      .activeUser({ userId: modelCurrentAction.id })
+      .then(response => {
+        if (response.data.success) {
+          message.success('Update user successful');
+          setActionChange(!actionChange);
+          setIsModalDeleteVisible(false);
+        } else
+          setSuccessStatus('Cannot get to update user', response.data.message);
+      })
+      .catch(error => {
+        console.log(error);
+        setSuccessStatus('Can not update user');
+      });
   };
   const handleDeleteCancel = () => {
     setIsModalDeleteVisible(false);
@@ -174,133 +175,170 @@ const EmployeeManager = () => {
           </button>
           <button
             type="button"
-            class={record.active ? "btn btn-danger" : "btn btn-info"}
+            class={record.active ? 'btn btn-danger' : 'btn btn-info'}
             onClick={() => {
               setModelCurrentAction(record);
               showDeleteModal();
             }}
           >
-            {record.active ? "Unactive" : "Active"}
+            {record.active ? 'Unactive' : 'Active'}
           </button>
         </Space>
       ),
     },
-  ]
+  ];
   return (
     <>
-    <Modal
-      title="Show employee's informations" 
-      visible={isModalShowVisible}
-      onOk={handleShowOk}
-      onCancel={handleShowCancel}
-    >
-      <p>SHOW {modelCurrentAction.name}'s INFORMATIONS</p>
-      <div class="form-group">
-        <label for="id">ID: </label>
-        <input
-          type="text"
-          readonly
-          class="form-control"
-          id="id"
-          value={modelCurrentAction.id}
-          disabled
-        ></input>
-      </div>
-      <div class="form-group">
-        <label for="name">Name: </label>
-        <input type="text" class="form-control" id="name" value={modelCurrentAction.name} disabled></input>
-      </div>
-      
-      <div class="form-group">
-        <label for="name">Phone number: </label>
-        <input type="text" class="form-control" id="phone_number" value={modelCurrentAction.phone_number} disabled></input>
-      </div>
-      
-      
-      <label>Gender: </label>
-      <select name="gender" id="gender" class="form-control" value={modelCurrentAction.gender} disabled>
-        <option value="nam">Nam</option>
-        <option value="nu">Nữ</option>
-      </select>
-      
-      <div class="date">
-        <label for="birthday">Date of birth: </label>
-        <input type="date" class="form-control" id="birthday" value={modelCurrentAction.date_of_birth} disabled></input>
-      </div>
-    </Modal>
-    <Modal
-      title="Update employee's informations"
-      visible={isModalUpdateVisible}
-      onOk={handleUpdateOk}
-      onCancel={handleUpdateCancel}
-    >
-      <p>ARE YOU SURE TO CHANGE {modelCurrentAction.name} INTO USER'S ROLE</p>
-      <div class="form-group">
-        <label for="id">ID: </label>
-        <input
-          type="text"
-          readonly
-          class="form-control"
-          id="id"
-          value={modelCurrentAction.id}
-          disabled
-        ></input>
-      </div>
-      <div class="form-group">
-        <label for="name">Name: </label>
-        <input type="text" class="form-control" id="name" value={modelCurrentAction.name} disabled></input>
-      </div>
-      <div class="form-group">
-        <i style={{ color: 'red' }}>{successStatus}</i>
-      </div>
-    </Modal>
-    <Modal
-      title="Delete"
-      visible={isModalDeleteVisible}
-      onOk={handleDeleteOk}
-      onCancel={handleDeleteCancel}
-    >
-      <p>ARE YOU SURE TO {modelCurrentAction.active ? ("UNACTIVE") : ("ACTIVE")} {modelCurrentAction.name}</p>
-      <div class="form-group">
-        <label for="id">ID: </label>
-        <input
-          type="text"
-          readonly
-          class="form-control"
-          id="id"
-          value={modelCurrentAction.id}
-          disabled
-        ></input>
-      </div>
-      <div class="form-group">
-        <label for="name">Name: </label>
-        <input type="text" class="form-control" id="name" value={modelCurrentAction.name} disabled></input>
-      </div>
-    </Modal>
-    <div className="employee-utilities">
-      <Search
-        allowClear
-        className="search"
-        placeholder="Input search text"
-        enterButton
-        onSearch={searchClick}
-        value={searchValue}
-        onChange={searchChange}
-      />
-    </div>
-    <div className="employee-table-container">
-      <Table
-        className="employee-table"
-        scroll={{
-          x: 1200,
-        }}
-        columns={columns}
-        dataSource={listEmployee}
-      />
-    </div>
-  </>
-  )
+      <Modal
+        title="Show employee's informations"
+        visible={isModalShowVisible}
+        onOk={handleShowOk}
+        onCancel={handleShowCancel}
+      >
+        <p>SHOW {modelCurrentAction.name}'s INFORMATIONS</p>
+        <div class="form-group">
+          <label for="id">ID: </label>
+          <input
+            type="text"
+            readonly
+            class="form-control"
+            id="id"
+            value={modelCurrentAction.id}
+            disabled
+          ></input>
+        </div>
+        <div class="form-group">
+          <label for="name">Name: </label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            value={modelCurrentAction.name}
+            disabled
+          ></input>
+        </div>
 
+        <div class="form-group">
+          <label for="name">Phone number: </label>
+          <input
+            type="text"
+            class="form-control"
+            id="phone_number"
+            value={modelCurrentAction.phone_number}
+            disabled
+          ></input>
+        </div>
+
+        <label>Gender: </label>
+        <select
+          name="gender"
+          id="gender"
+          class="form-control"
+          value={modelCurrentAction.gender}
+          disabled
+        >
+          <option value="nam">Male</option>
+          <option value="nu">Female</option>
+        </select>
+
+        <div class="date">
+          <label for="birthday">Date of birth: </label>
+          <input
+            type="date"
+            class="form-control"
+            id="birthday"
+            value={modelCurrentAction.date_of_birth}
+            disabled
+          ></input>
+        </div>
+      </Modal>
+      <Modal
+        title="Update employee's informations"
+        visible={isModalUpdateVisible}
+        onOk={handleUpdateOk}
+        onCancel={handleUpdateCancel}
+      >
+        <p>ARE YOU SURE TO CHANGE {modelCurrentAction.name} INTO USER'S ROLE</p>
+        <div class="form-group">
+          <label for="id">ID: </label>
+          <input
+            type="text"
+            readonly
+            class="form-control"
+            id="id"
+            value={modelCurrentAction.id}
+            disabled
+          ></input>
+        </div>
+        <div class="form-group">
+          <label for="name">Name: </label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            value={modelCurrentAction.name}
+            disabled
+          ></input>
+        </div>
+        <div class="form-group">
+          <i style={{ color: 'red' }}>{successStatus}</i>
+        </div>
+      </Modal>
+      <Modal
+        title="Delete"
+        visible={isModalDeleteVisible}
+        onOk={handleDeleteOk}
+        onCancel={handleDeleteCancel}
+      >
+        <p>
+          ARE YOU SURE TO {modelCurrentAction.active ? 'UNACTIVE' : 'ACTIVE'}{' '}
+          {modelCurrentAction.name}
+        </p>
+        <div class="form-group">
+          <label for="id">ID: </label>
+          <input
+            type="text"
+            readonly
+            class="form-control"
+            id="id"
+            value={modelCurrentAction.id}
+            disabled
+          ></input>
+        </div>
+        <div class="form-group">
+          <label for="name">Name: </label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            value={modelCurrentAction.name}
+            disabled
+          ></input>
+        </div>
+      </Modal>
+      <div className="employee-utilities">
+        <Search
+          allowClear
+          className="search"
+          placeholder="Input search text"
+          enterButton
+          onSearch={searchClick}
+          value={searchValue}
+          onChange={searchChange}
+        />
+      </div>
+      <div className="employee-table-container">
+        <Table
+          className="employee-table"
+          scroll={{
+            x: 1200,
+          }}
+          columns={columns}
+          dataSource={listEmployee}
+        />
+      </div>
+    </>
+  );
 };
 
 export default EmployeeManager;

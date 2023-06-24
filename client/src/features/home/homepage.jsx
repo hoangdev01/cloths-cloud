@@ -6,19 +6,10 @@ import {
   ListIcon,
   ListItem,
   Text,
-  Button,
-  Link,
 } from '@chakra-ui/react';
 import React from 'react';
 import { FiPhoneCall } from 'react-icons/fi';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
-
-import img1 from '../../assets/tour-img/tour-1.jpg';
-import img2 from '../../assets/tour-img/tour-2.jpg';
-import img3 from '../../assets/tour-img/tour-3.jpg';
-import img4 from '../../assets/tour-img/tour-4.jpg';
-
-import base from '../../assets/base.css';
 
 function HomePage(props) {
   return (
@@ -329,9 +320,6 @@ function HomePage(props) {
             transition: 'all 0.1s linear',
           }}
         >
-          <Box>
-            <Image src={img1}></Image>
-          </Box>
           <Box py={'10px'} px={'16px'}>
             <Text
               color={'var(--text-color)'}
@@ -377,9 +365,6 @@ function HomePage(props) {
             transition: 'all 0.1s linear',
           }}
         >
-          <Box>
-            <Image src={img2}></Image>
-          </Box>
           <Box py={'10px'} px={'16px'}>
             <Text
               color={'var(--text-color)'}
@@ -424,9 +409,6 @@ function HomePage(props) {
             transition: 'all 0.1s linear',
           }}
         >
-          <Box>
-            <Image src={img3}></Image>
-          </Box>
           <Box py={'10px'} px={'16px'}>
             <Text
               color={'var(--text-color)'}
@@ -471,9 +453,6 @@ function HomePage(props) {
             transition: 'all 0.1s linear',
           }}
         >
-          <Box>
-            <Image src={img4}></Image>
-          </Box>
           <Box py={'10px'} px={'16px'}>
             <Text
               color={'var(--text-color)'}

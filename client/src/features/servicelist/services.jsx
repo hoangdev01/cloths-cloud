@@ -8,13 +8,6 @@ import serviceAPI from '../../api/serviceApi';
 const Services = props => {
   const { list } = props;
 
-  // useEffect(() => {
-  //   serviceAPI.getServiceList('cloth').then(res => {
-  //     const list = res.data.serviceList;
-  //     console.log(res.data.serviceList);
-  //     setList(res.data.serviceList);
-  //   });
-  // }, []);
   return (
     <Box display={'flex'} flexWrap={'wrap'} px={'15px'}>
       {list

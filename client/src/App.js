@@ -16,6 +16,9 @@ import Auth from './features/auth/auth';
 import Admin from './features/admin/Admin';
 import VerifyToken from './features/auth/verifytoken.js';
 import Purchase from './features/purchase/purchase.jsx';
+import NotFoundPage from './features/notfound/NotFoundPage.jsx';
+import ForbiddenPage from './features/notfound/ForbiddenPage.jsx';
+import ServerErrorPage from './features/notfound/ServerErrorPage.jsx';
 // import Auth from './features/auth/auth';
 
 function App() {
@@ -23,112 +26,73 @@ function App() {
     <AuthContextProvider>
       <Box>
         <ButtonSrollTop />
+        <Header />
         <Routes>
           <Route
             path="/admin/dashboard"
             exact
             element={<Admin adminRoute="dashboard" />}
           />
-        </Routes>
-        <Routes>
           <Route
             path="/admin/user"
             exact
             element={<Admin adminRoute="user" />}
           />
-        </Routes>
-        <Routes>
           <Route
             path="/admin/employee"
             exact
             element={<Admin adminRoute="employee" />}
           />
-        </Routes>
-        <Routes>
           <Route
             path="/admin/bill"
             exact
             element={<Admin adminRoute="bill" />}
           />
-        </Routes>
-        <Routes>
           <Route
             path="/admin/cloth"
             exact
             element={<Admin adminRoute="cloth" />}
           />
-        </Routes>
-        <Routes>
           <Route path="/admin" exact element={<Admin adminRoute="" />} />
-        </Routes>
-        <Routes>
           <Route
             path="/admin/event"
             exact
             element={<Admin adminRoute="event" />}
           />
-        </Routes>
-        <Routes>
           <Route path="/admin/tag" exact element={<Admin adminRoute="tag" />} />
-        </Routes>
-        <Routes>
           <Route
             path="/admin/profile"
             exact
             element={<Admin adminRoute="profile" />}
           />
-        </Routes>
-        <Header />
-        <Routes>
           <Route path="/sign-in" exact element={<Auth authRoute="login" />} />
-        </Routes>
-        <Routes>
           <Route
             path="/sign-up"
             exact
             element={<Auth authRoute="register" />}
           />
-        </Routes>
-        <Routes>
           <Route
             path="/forget-password"
             exact
             element={<Auth authRoute="forget-password" />}
           />
-        </Routes>
-        <Routes>
           <Route
             path="/reset-password/:token"
             exact
             element={<Auth authRoute="reset-password" />}
           />
-        </Routes>
-        <Routes>
           <Route path="/logout" exact element={<Auth authRoute="logout" />} />
-        </Routes>
-        <Routes>
           <Route path="/verify-token/:token" exact element={<VerifyToken />} />
-        </Routes>
-        <Routes>
           <Route path="/" exact element={<ServiceList />} />
-        </Routes>
-        <Routes>
           <Route path="/home" exact element={<ServiceList />} />
-        </Routes>
-        <Routes>
           <Route path="/cloth-list" exact element={<ServiceList />} />
-        </Routes>
-        <Routes>
           <Route path="/cloth-detail/:slug" exact element={<ServiceDetail />} />
-        </Routes>
-        <Routes>
           <Route path="/profile" exact element={<Profile />} />
-        </Routes>
-        <Routes>
           <Route path="/purchase" exact element={<Purchase />} />
-        </Routes>
-        <Routes>
           <Route path="/cart" exact element={<Carts />} />
+          <Route path="/403" element={<ForbiddenPage />} />
+          <Route path="/500" element={<ServerErrorPage />} />
+          <Route path="/*" element={<NotFoundPage />} />
         </Routes>
         <Footer />
       </Box>

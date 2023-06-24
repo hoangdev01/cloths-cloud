@@ -75,6 +75,7 @@ const Carts = () => {
 
   useEffect(() => {
     setData();
+    window.scrollTo(0, 0);
   }, []);
 
   return (

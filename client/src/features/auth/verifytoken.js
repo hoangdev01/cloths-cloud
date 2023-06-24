@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import './style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { AuthContext } from '../../contexts/AuthContext';
+import { message } from 'antd';
 
 function VerifyToken(props) {
   const token = useParams().token;
@@ -19,7 +20,7 @@ function VerifyToken(props) {
     try {
       const verify = await verifyToken(tokenForm);
       if (verify.success) {
-        alert('Create account success');
+        message.success('Create account success');
         window.location.reload();
       } else {
         navigate('/sign-up');

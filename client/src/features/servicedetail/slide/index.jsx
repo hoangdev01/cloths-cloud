@@ -37,7 +37,7 @@ const ImageSlider = ({ slides }) => {
                 alignItems="center"
                 justifyContent="center"
               >
-                <img src={slide.image} alt="travel img" className="image"></img>
+                <img src={slide.image} alt="cloth img" className="image"></img>
               </Box>
             )}
           </div>

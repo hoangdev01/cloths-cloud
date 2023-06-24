@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import BookmarksIcon from '@mui/icons-material/Bookmarks';
 
 import billApi from '../../api/billApi';
 import './style.scss';
-import { ClassNames } from '@emotion/react';
 import moment from 'moment';
-import { Table, Space, Input, Modal, Button } from 'antd';
+import { Table, Space, Input, Modal, message } from 'antd';
 import { Container } from '@chakra-ui/react';
 import {
   Center,
@@ -42,6 +40,7 @@ const Purchase = () => {
   const [modelCurrentAction, setModelCurrentAction] = useState(entryData);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     billApi
       .getAll()
       .then(response => {
@@ -80,8 +79,8 @@ const Purchase = () => {
   const handleCancelOk = () => {
     if (modelCurrentAction.id)
       billApi.cancel({ billId: modelCurrentAction.id }).then(res => {
-        if (res.data.success) alert('This bill is canceled');
-        else alert('Can not cancel this bill');
+        if (res.data.success) message.info('This bill is canceled');
+        else message.error('Can not cancel this bill');
         billApi
           .getAll()
           .then(response => {

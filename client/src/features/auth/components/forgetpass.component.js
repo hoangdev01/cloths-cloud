@@ -1,10 +1,13 @@
 import '../style.css';
-import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useContext, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { AuthContext } from '../../../contexts/AuthContext';
+import { message } from 'antd';
 
 function ForgetPassword(props) {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const { forgetPassword } = useContext(AuthContext);
   const [invalidMessage, setInvalidMessage] = useState('');
 
@@ -18,12 +21,13 @@ function ForgetPassword(props) {
       [event.target.name]: event.target.value,
     });
   };
+
   const forget = async event => {
     try {
       event.preventDefault();
       const forgetData = await forgetPassword(forgetPasswordForm);
       if (forgetData.success) {
-        alert('Check in your email');
+        message.info('Check in your email');
       } else {
         setInvalidMessage(forgetData.message);
       }

@@ -2,12 +2,8 @@ import {
   Box,
   Text,
   Container,
-  Modal,
-  ModalOverlay,
-  ModalContent,
   Spinner,
   IconButton,
-  Icon,
   Flex,
   Tooltip,
   Image,
@@ -15,12 +11,11 @@ import {
 import React, { useEffect, useState } from 'react';
 import Services from './services';
 import { InboxOutlined } from '@ant-design/icons';
-import { message, Upload } from 'antd';
+import { message, Upload, Input } from 'antd';
 import { ai_url, url } from './../../api/constants';
 import serviceAPI from '../../api/serviceApi';
-import { truncate } from 'lodash';
 import { RepeatIcon } from '@chakra-ui/icons';
-
+const { Search } = Input;
 const { Dragger } = Upload;
 
 function ServiceList(props) {
@@ -30,6 +25,7 @@ function ServiceList(props) {
   const [isRotating, setIsRotating] = useState(false);
   const [isClicked, setIsClicked] = useState(1);
   const [searchImage, setSearchImage] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
 
   const handleClick = () => {
     setIsRotating(true);
@@ -54,6 +50,27 @@ function ServiceList(props) {
     });
   }, []);
 
+  const searchChange = event => setSearchValue(event.target.value);
+  const searchClick = () => {
+    if (!searchValue || searchValue.length == 0) {
+      serviceAPI.getServiceList('cloth').then(res => {
+        const list = res.data.serviceList;
+        setList(res.data.serviceList);
+        setCategoryId(res.data.categoryId);
+        return;
+      });
+    }
+    const filteredData = list.filter(
+      entry =>
+        entry.id.toString().toLowerCase().includes(searchValue.toLowerCase()) ||
+        entry.name
+          .toString()
+          .toLowerCase()
+          .includes(searchValue.toLowerCase()) ||
+        entry.price.toString().toLowerCase() == searchValue.toLowerCase()
+    );
+    setList(filteredData);
+  };
   const draggerProps = {
     name: 'file',
     multiple: false, // Chỉnh multiple thành false để chuyển sang single upload
@@ -81,7 +98,7 @@ function ServiceList(props) {
               if (res.data.success) {
                 setList(res.data.serviceList);
               } else {
-                alert('Product not found');
+                message.error('Product not found');
                 serviceAPI.getServiceList('cloth').then(res => {
                   const list = res.data.serviceList;
                   setList(res.data.serviceList);
@@ -109,8 +126,13 @@ function ServiceList(props) {
     <Container maxW={'100%'} pt={'20px'} pb={'90px'}>
       <Box w={'full'} display={'flex'}>
         {/* left */}
-        <Box px={'15px'} maxW={'30%'} width={'full'}>
-          <Box rounded={'15px'} px={'20px'} py={'42px'} bgColor={'#edf2f7'}>
+        <Box
+          px={'15px'}
+          maxW={'30%'}
+          width={'full'}
+          boxShadow={'0 2px 4px rgba(0, 0, 0, 0.3)'}
+        >
+          <Box rounded={'15px'} px={'20px'} py={'42px'} bgColor={'white'}>
             <Flex align="center">
               <Text
                 fontWeight={'700'}
@@ -145,16 +167,14 @@ function ServiceList(props) {
                         outline: 'none',
                         'box-shadow': 'none',
                       }}
-                      _hover={{
-                        backgroundColor: 'transparent',
-                      }}
-                      _active={{
-                        backgroundColor: 'transparent',
-                      }}
                     />
                   }
                   marginBottom={'20px'}
                   aria-label="Rotate Arrow"
+                  backgroundColor={'transparent'}
+                  _hover={{
+                    backgroundColor: 'transparent',
+                  }}
                 />
               </Tooltip>
             </Flex>
@@ -172,6 +192,18 @@ function ServiceList(props) {
                 transition="transform 0.1s ease"
               />
             ) : null}
+            <Search
+              allowClear
+              className="search"
+              placeholder="Input search text"
+              enterButton
+              onSearch={searchClick}
+              value={searchValue}
+              onChange={searchChange}
+            />
+
+            <br />
+            <hr />
             <Dragger
               {...draggerProps}
               style={{ display: searchImage ? 'none' : 'block' }}

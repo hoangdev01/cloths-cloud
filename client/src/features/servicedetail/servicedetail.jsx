@@ -35,7 +35,7 @@ import {
   ModalCloseButton,
   Flex,
 } from '@chakra-ui/react';
-import { InputNumber } from 'antd';
+import { InputNumber, message } from 'antd';
 import { AuthContext } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -77,7 +77,7 @@ const ServiceDetail = () => {
   const handleUpload = async (info, onSuccess, onError) => {
     const image = service.images.find(image => image.is_avatar);
     if (!image) {
-      alert('This product has no pictures yet');
+      message.warning('This product has no pictures yet');
       return;
     }
     const formData = new FormData();
@@ -88,7 +88,7 @@ const ServiceDetail = () => {
 
     try {
       serviceAPI.mergeImage(formData).then(res => {
-        alert('Image sent, result will send for you soon!');
+        message.success('Image sent, result will send for you soon!');
         onSuccess();
       });
       console.log('formData');
@@ -147,6 +147,7 @@ const ServiceDetail = () => {
   let [show, setShow] = useState(false);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     serviceAPI
       .getService(slug)
       .then(res => {
@@ -218,25 +219,27 @@ const ServiceDetail = () => {
 
   const handleClick = () => {
     if (!amount) {
-      alert('The product is no longer available or may not exist');
+      message.warning('The product is no longer available or may not exist');
       setShow(false);
       return;
     }
 
     if (!selectedColor || !selectedSize) {
-      alert('Please select Category');
+      message.warning('Please select Category');
       setShow(false);
       return;
     }
 
     if (!selectAmount) {
-      alert('Please select product quantity');
+      message.warning('Please select product quantity');
       setShow(false);
       return;
     }
 
     if (selectAmount > amount) {
-      alert('The product does not meet the quantity you have selected');
+      message.warning(
+        'The product does not meet the quantity you have selected'
+      );
       setShow(false);
       return;
     }
@@ -264,7 +267,7 @@ const ServiceDetail = () => {
     }
 
     if (instanceInCart && amount < selectAmount + instanceInCart.amount) {
-      alert('The selected product exceeds the available quantity');
+      message.warning('The selected product exceeds the available quantity');
       setShow(false);
       return;
     }
@@ -301,11 +304,11 @@ const ServiceDetail = () => {
     CartApi.addCart(cartService)
       .then(response => {
         if (response.data.success) {
-          alert('Added service to cart');
+          message.success('Added service to cart');
           CartApi.getAll().then(res => {
             setCart(res.data.listCart);
           });
-        } else alert('Add service to cart fail');
+        } else message.error('Add service to cart fail');
       })
       .catch(err => {
         console.log(err);

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
 // import './index.css';
 import { PlusOutlined } from '@ant-design/icons';
-import { Modal, Upload } from 'antd';
+import { Modal, Upload, message } from 'antd';
 import resourceApi from '../../api/resourceApi';
 import serviceAPI from '../../api/serviceApi';
 import Spinner from 'react-bootstrap/Spinner';
@@ -86,7 +86,7 @@ const UploadBox = props => {
           }
           setFileList(list);
         } else {
-          alert('Can not upload file');
+          message.success('Can not upload file');
         }
       });
     } catch (error) {}

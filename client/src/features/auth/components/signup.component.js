@@ -1,13 +1,17 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../../contexts/AuthContext';
 import '../style.css';
 import { useNavigate } from 'react-router-dom';
+import { message } from 'antd';
 
 function SignUp(props) {
   const {
     registerUser,
     authState: { role },
   } = useContext(AuthContext);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [registerError, setRegisterError] = useState('');
   const navigate = useNavigate();
   const [registerForm, setRegisterForm] = useState({
@@ -28,7 +32,7 @@ function SignUp(props) {
       event.preventDefault();
       const registerData = await registerUser(registerForm);
       if (registerData.success) {
-        alert('Please verify account in your email');
+        message.info('Please verify account in your email');
       } else {
         setRegisterError(registerData.message);
       }

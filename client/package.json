@@ -1,10 +1,10 @@
 {
-  "name": "klook-app",
+  "name": "cloths-cloud-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@chakra-ui/icons": "^2.0.19",
-    "@chakra-ui/react": "^2.0.2",
+    "@chakra-ui/react": "^2.7.1",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.6.2",

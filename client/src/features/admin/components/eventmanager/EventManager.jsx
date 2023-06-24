@@ -3,10 +3,10 @@ import eventApi from '../../../../api/eventApi';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import './eventmanager.scss';
-import { Table, Space, Input, Modal, Button } from 'antd';
+import { Table, Space, Input, Modal, Button, message } from 'antd';
 import 'antd/dist/antd.css';
 import moment from 'moment';
-import UploadBox from '../../../../components/upload-box/upload-box'
+import UploadBox from '../../../../components/upload-box/upload-box';
 const { Search } = Input;
 
 const EventManager = () => {
@@ -15,7 +15,7 @@ const EventManager = () => {
     description: '',
     discount: '',
     is_active: '',
-    startAt: '', 
+    startAt: '',
     endAt: '',
   };
   const [successStatus, setSuccessStatus] = useState('');
@@ -29,11 +29,10 @@ const EventManager = () => {
   const [isModalDeleteVisible, setIsModalDeleteVisible] = useState(false);
   const [modelCurrentAction, setModelCurrentAction] = useState({});
   const [actionChange, setActionChange] = useState(true);
-  
+
   const { name, description, discount, is_active, startAt, endAt } =
     modelCurrentAction;
   useEffect(() => {
-
     eventApi
       .getAll()
       .then(response => {
@@ -41,22 +40,28 @@ const EventManager = () => {
         console.log(response.data);
       })
       .catch(error => {
-        console.log('Failed to fetch EventList:',error);
+        console.log('Failed to fetch EventList:', error);
       });
   }, [actionChange]);
 
   const showAddModal = () => {
     setSuccessStatus('');
     setIsModalAddVisible(true);
-    setModelCurrentAction(entryModal);  
+    setModelCurrentAction(entryModal);
   };
-  const handleAddOk = async() => {
+  const handleAddOk = async () => {
     // setIsModalAddVisible(false);
-    if (name == '' || description == '' || discount == ''|| endAt == '' || startAt == '') {
+    if (
+      name == '' ||
+      description == '' ||
+      discount == '' ||
+      endAt == '' ||
+      startAt == ''
+    ) {
       setSuccessStatus('Not enough infomation');
       return;
     }
-    if (moment(endAt).unix() - moment(startAt).unix() < 0){
+    if (moment(endAt).unix() - moment(startAt).unix() < 0) {
       setSuccessStatus('Set wrong day');
       return;
     }
@@ -65,7 +70,7 @@ const EventManager = () => {
       .then(response => {
         if (response.data.success) {
           setModelCurrentAction(entryModal);
-          alert('Add event successful');
+          message.success('Add event successful');
           setActionChange(!actionChange);
           setIsModalAddVisible(false);
         } else setSuccessStatus(response.data.message);
@@ -95,11 +100,17 @@ const EventManager = () => {
   };
   const handleUpdateOk = () => {
     // setIsModalUpdateVisible(false);
-    if (name == '' || description == '' || discount == ''|| endAt == '' || startAt == '') {
+    if (
+      name == '' ||
+      description == '' ||
+      discount == '' ||
+      endAt == '' ||
+      startAt == ''
+    ) {
       setSuccessStatus('Not enough infomation');
       return;
     }
-    if (moment(endAt).unix() - moment(startAt).unix() < 0){
+    if (moment(endAt).unix() - moment(startAt).unix() < 0) {
       setSuccessStatus('Set wrong day');
       return;
     }
@@ -108,7 +119,7 @@ const EventManager = () => {
       .then(response => {
         if (response.data.success) {
           setModelCurrentAction(entryModal);
-          alert('Update event successfully');
+          message.success('Update event successfully');
           setActionChange(!actionChange);
           setIsModalUpdateVisible(false);
         } else setSuccessStatus(response.data.message);
@@ -132,7 +143,7 @@ const EventManager = () => {
       .then(response => {
         if (response.data.success) {
           setModelCurrentAction(entryModal);
-          alert('Delete event successfully');
+          message.success('Delete event successfully');
           setActionChange(!actionChange);
           setIsModalDeleteVisible(false);
         } else setSuccessStatus(response.data.message);
@@ -211,7 +222,7 @@ const EventManager = () => {
       key: 'action',
       width: 280,
       fixed: 'right',
-      render: (index, record) => (             
+      render: (index, record) => (
         <Space className="action-button" size="middle">
           <button
             type="button"
@@ -265,7 +276,7 @@ const EventManager = () => {
         visible={isModalAddVisible}
         onOk={handleAddOk}
         onCancel={handleAddCancel}
-      >               
+      >
         <div class="form-group">
           <label for="name">Name: </label>
           <input
@@ -312,7 +323,7 @@ const EventManager = () => {
           <option value="true">True</option>
           <option value="false">False</option>
         </select>
-      
+
         <div class="date">
           <label for="date">Start at: </label>
           <input
@@ -321,7 +332,7 @@ const EventManager = () => {
             class="form-control"
             id="startAt"
             value={startAt}
-            onChange={onchangeModelCurrentAction}           
+            onChange={onchangeModelCurrentAction}
           ></input>
           <label for="date">End at: </label>
           <input
@@ -330,22 +341,20 @@ const EventManager = () => {
             class="form-control"
             id="endAt"
             value={endAt}
-            onChange={onchangeModelCurrentAction}           
+            onChange={onchangeModelCurrentAction}
           ></input>
-          
         </div>
         <div class="form-group">
           <i style={{ color: 'red' }}>{successStatus}</i>
         </div>
       </Modal>
       <Modal
-        title="Show event's informations" 
+        title="Show event's informations"
         visible={isModalImageVisible}
         onOk={handleImageOk}
         onCancel={handleImageCancel}
       >
         <UploadBox service={modelCurrentAction} />
-        
       </Modal>
       <Modal
         title="Update events's details"
@@ -410,7 +419,7 @@ const EventManager = () => {
           <option value="true">True</option>
           <option value="false">False</option>
         </select> */}
-      
+
         <div class="date">
           <label for="date">Start at: </label>
           <input
@@ -419,7 +428,7 @@ const EventManager = () => {
             class="form-control"
             id="startAt"
             value={startAt}
-            onChange={onchangeModelCurrentAction}           
+            onChange={onchangeModelCurrentAction}
           ></input>
           <label for="date">End at: </label>
           <input
@@ -428,9 +437,8 @@ const EventManager = () => {
             class="form-control"
             id="endAt"
             value={endAt}
-            onChange={onchangeModelCurrentAction}           
+            onChange={onchangeModelCurrentAction}
           ></input>
-          
         </div>
         <div class="form-group">
           <i style={{ color: 'red' }}>{successStatus}</i>

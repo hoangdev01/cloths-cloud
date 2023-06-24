@@ -376,11 +376,16 @@ const Header = () => {
                   <Link to={'/'}>
                     <Box
                       // style={{ backgroundImage: `url(${logo})` }}
-                      style={{ backgroundImage: `url(${logo})` }}
+                      style={{
+                        backgroundImage: `url(${logo})`,
+                        backgroundSize: '100% 100%',
+                        backgroundPosition: 'center',
+                        backgroundRepeat: 'no-repeat',
+                      }}
                       // h={'38px'}
                       // w={'165px'}
-                      h={'75px'}
-                      w={'100px'}
+                      h={'100px'}
+                      w={'80px'}
                       bgSize={'cover'}
                       bgPosition={'center'}
                       bgRepeat={'no-repeat'}
@@ -568,8 +573,7 @@ const Header = () => {
                       justifyContent={'center'}
                       rounded={'10px'}
                       _hover={{
-                        color: 'white',
-                        backgroundColor: 'var(--hover-color)',
+                        bg: 'gray.300',
                       }}
                       onClick={() => setOptionUser(!optionUser)}
                       ref={ref}
@@ -696,15 +700,14 @@ const Header = () => {
                         minW={'25px'}
                         h={'50px'}
                         w={'50px'}
-                        transition={'all 0.3s linear'}
+                        transition={'all 0.1s linear'}
                         cursor={'pointer'}
                         display={'flex'}
                         alignItems={'center'}
                         justifyContent={'center'}
                         rounded={'10px'}
                         _hover={{
-                          color: 'white',
-                          backgroundColor: 'var(--hover-color)',
+                          bg: 'gray.300',
                         }}
                       >
                         <AiOutlineShoppingCart size={23} />
