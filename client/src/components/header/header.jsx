@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useMemo } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   Box,
   Container,
@@ -472,13 +472,21 @@ const Header = () => {
                             ) : null}
                           </Box>
                         </MenuButton>
-                        <MenuList color={'black'} minW="300px">
+                        <MenuList
+                          color={'black'}
+                          minW="300px"
+                          spacing={
+                            listNotification.length > 0
+                              ? listNotification.length + 1
+                              : '0'
+                          }
+                        >
                           <Box maxH="200px" overflowY="auto">
                             {listNotification.length > 0
                               ? listNotification.map(item => (
                                   <>
                                     <MenuItem
-                                      minH="56px" // Tăng chiều cao
+                                      minH="50px" // Tăng chiều cao
                                       display="flex"
                                       alignItems="center"
                                       _hover={{ bg: 'gray.300' }} // Background xám khi hover
@@ -518,7 +526,7 @@ const Header = () => {
                                         />
                                       )}
                                     </MenuItem>
-                                    <hr />
+                                    <hr style={{ margin: '0px' }} />
                                   </>
                                 ))
                               : null}
@@ -608,7 +616,7 @@ const Header = () => {
                             }}
                             userSelect="none"
                           >
-                            <Box px={'15px'} py={'7px'}>
+                            <Box px={'15px'}>
                               <Text
                                 _hover={{
                                   color: 'var(--hover-color)',
@@ -625,7 +633,7 @@ const Header = () => {
                             }}
                             userSelect="none"
                           >
-                            <Box px={'15px'} py={'7px'}>
+                            <Box px={'15px'}>
                               <Text
                                 _hover={{
                                   color: 'var(--hover-color)',
@@ -643,7 +651,7 @@ const Header = () => {
                             }}
                             userSelect="none"
                           >
-                            <Box px={'15px'} py={'7px'}>
+                            <Box px={'15px'}>
                               <Text
                                 _hover={{
                                   color: 'var(--hover-color)',
@@ -660,7 +668,7 @@ const Header = () => {
                             }}
                             userSelect="none"
                           >
-                            <Box px={'15px'} py={'7px'}>
+                            <Box px={'15px'}>
                               <Text
                                 _hover={{
                                   color: 'var(--hover-color)',
@@ -677,11 +685,12 @@ const Header = () => {
                               display: isAuthenticated ? 'block' : 'none',
                             }}
                           >
-                            <Box px={'15px'} py={'7px'}>
+                            <Box px={'15px'}>
                               <Text
                                 _hover={{
                                   color: '#00c2cb',
                                 }}
+                                marginBottom={'0px'}
                               >
                                 Logout
                               </Text>
