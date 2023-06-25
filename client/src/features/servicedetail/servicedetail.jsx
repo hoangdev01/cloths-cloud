@@ -519,10 +519,10 @@ const ServiceDetail = () => {
             <InboxOutlined />
           </p>
           <p className="ant-upload-text">
-            Click or drag file to this area to upload a suggesting image
+            Click or drag file to this area to upload your body image
           </p>
           <p className="ant-upload-hint">
-            Support to search for products by suggested images uploaded
+            Support to try on clothes online
           </p>
         </Dragger>
       </Card>
