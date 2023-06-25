@@ -23,6 +23,20 @@ const verifyToken = require("./middleware/verify-token");
 const verifyTokenUrl = require("./middleware/verify-token-url");
 const upload = require("./middleware/upload");
 
+const fs = require('fs');
+const https = require('https');
+
+const privateKeyPath = process.env.PRIVATE_KEY;
+const certificatePath = process.env.PUBLIC_KEY;
+
+const privateKey = fs.readFileSync(privateKeyPath, 'utf8');
+const certificate = fs.readFileSync(certificatePath, 'utf8');
+
+const options = {
+  key: privateKey,
+  cert: certificate
+};
+
 const app = express();
 const PORT = process.env.PORT || 4000;
 app.use(function (req, res, next) {
@@ -62,7 +76,7 @@ app.post("/calculate", verifyToken, (req, res) => {
 
   const worker = new Worker("./src/worker/calculator.js", { workerData: data });
 
-  res.json({ message: "Đang tính toán..." });
+  res.json({ message: "Caculating..." });
 
   worker.on("message", (result) => {
     clients.forEach((client) => {
@@ -73,10 +87,10 @@ app.post("/calculate", verifyToken, (req, res) => {
   });
 
   worker.on("error", (error) => {
-    console.error("Lỗi trong worker:", error);
+    console.error("Error in worker:", error);
     clients.forEach((client) => {
       if (client.userId === req.userId) {
-        client.res.write(`data: Đã xảy ra lỗi trong quá trình tính toán\n\n`);
+        client.res.write(`data: Error\n\n`);
       }
     });
 
@@ -103,7 +117,7 @@ app.post(
       workerData: data,
     });
 
-    res.json({ message: "Đang tính toán..." });
+    res.json({ message: "Calculating..." });
 
     worker.on("message", (result) => {
       clients.forEach((client) => {
@@ -114,7 +128,6 @@ app.post(
     });
 
     worker.on("error", (error) => {
-      console.error("Lỗi trong worker:", error);
       clients.forEach((client) => {
         if (client.userId === req.userId) {
           client.res.write(`data: Đã xảy ra lỗi trong quá trình tính toán\n\n`);
@@ -129,16 +142,22 @@ app.post(
 // SSE endpoint để kết nối clients
 app.get("/notifications/:token", verifyTokenUrl, async (req, res) => {
   res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Connection", "keep-alive");
   res.setHeader("Cache-Control", "no-store");
+  res.setHeader("X-Accel-Buffering'", "no");
   res.setHeader("Access-Control-Allow-Origin", "*");
 
   clients.push({ userId: req.userId, res });
+  console.error("Set up clients:", clients);
 
   req.on("close", () => {
     clients = clients.filter((client) => client.userId !== req.userId);
   });
 });
 
-app.listen(PORT, () => {
+const server = https.createServer(options, app);
+
+
+server.listen(PORT, () => {
   console.log(`Server started on port: ${PORT}`);
 });
