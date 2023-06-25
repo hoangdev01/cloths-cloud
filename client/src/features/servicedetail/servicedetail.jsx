@@ -84,14 +84,11 @@ const ServiceDetail = () => {
     formData.append('file', info);
     formData.append('cloth', image.name);
     formData.append('serviceId', service.id);
-    console.log(info);
 
     try {
       serviceAPI.mergeImage(formData).then(res => {
         message.success('Image sent, result will send for you soon!');
-        onSuccess();
       });
-      console.log('formData');
     } catch (error) {
       onError(error);
     }

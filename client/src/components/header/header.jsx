@@ -21,7 +21,6 @@ import {
   Stack,
   Heading,
 } from '@chakra-ui/react';
-import FBChat from '../social/FbChat';
 import { Link } from 'react-router-dom';
 
 import logo from '../../assets/logo.png';
@@ -31,7 +30,7 @@ import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { AiOutlineBell } from 'react-icons/ai';
 import { FaRegUser } from 'react-icons/fa';
 import { AuthContext } from '../../contexts/AuthContext';
-import { url } from '../../api/constants';
+import { notification_url } from '../../api/constants';
 import { LOCAL_STORAGE_ACCESS_TOKEN_NAME } from '../../contexts/constants';
 import notificationApi from '../../api/notificationApi';
 import {
@@ -176,7 +175,7 @@ const Header = () => {
       }
     });
     const eventSource = new EventSource(
-      `${url}/notifications/${localStorage[LOCAL_STORAGE_ACCESS_TOKEN_NAME]}`
+      `${notification_url}/notifications/${localStorage[LOCAL_STORAGE_ACCESS_TOKEN_NAME]}`
     );
 
     eventSource.onmessage = event => {

@@ -79,14 +79,11 @@ function ServiceList(props) {
     showUploadList: false,
     method: 'post',
     onChange(info) {
-      console.log('on change');
-      console.log(ai_url);
       setIsLoading(true);
       // Xử lý logic khi upload
       const { status, originFileObj } = info.file;
       setSearchImage(URL.createObjectURL(originFileObj));
       if (status !== 'uploading') {
-        console.log('abc');
       }
       if (status === 'done') {
         if (info.file.response.success) {
@@ -112,7 +109,6 @@ function ServiceList(props) {
         }
         setIsLoading(false);
       } else if (status === 'error') {
-        console.log('fail');
         setIsLoading(false);
         message.error(`${info.file.name} file upload failed.`);
       }
