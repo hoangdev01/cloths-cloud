@@ -124,6 +124,9 @@ const Header = () => {
       if (res.data.success)
         notificationApi.getAll().then(res => {
           if (res.data.success) {
+            res.data.listNotification.sort((a, b) => {
+              return new Date(b.createdAt) - new Date(a.createdAt);
+            });
             setListNotification(res.data.listNotification);
             setUnRead(res.data.unRead);
           }
