@@ -252,13 +252,13 @@ const Purchase = () => {
                     <Heading fontSize={'2xl'} fontFamily={'body'}>
                       {item.instance?.service?.name || 'no data'}
                     </Heading>
-                    <Text fontWeight={600} color={'gray.500'} size="sm" mb={4}>
+                    <Text fontWeight={600} color={'gray.500'} size="sm" mb={0}>
                       Color: {item.instance?.color || 'no data'}
                     </Text>
-                    <Text fontWeight={600} color={'gray.500'} size="sm" mb={4}>
+                    <Text fontWeight={600} color={'gray.500'} size="sm" mb={0}>
                       Size: {item.instance?.size || 'no data'}
                     </Text>
-                    <Text fontWeight={600} color={'gray.500'} size="sm" mb={4}>
+                    <Text fontWeight={600} color={'gray.500'} size="sm" mb={0}>
                       Amount: {item.instance?.amount || 'no data'}
                     </Text>
                   </Stack>

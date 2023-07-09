@@ -641,7 +641,7 @@ const Header = () => {
                               >
                                 Register
                               </Text>
-                            </Box>{' '}
+                            </Box>
                           </Link>
                           <Link
                             to="/profile"
