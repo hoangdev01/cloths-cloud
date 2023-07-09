@@ -72,5 +72,6 @@ const mergeImage = async (data) => {
     await notification.save();
     parentPort.postMessage("Try on failed");
     console.error("Error:", error);
+    console.error("API Url:", process.env.MERGE_IMAGE_API_URL);
   }
 })();

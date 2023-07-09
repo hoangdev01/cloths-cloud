@@ -148,7 +148,7 @@ app.get("/notifications/:token", verifyTokenUrl, async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
 
   clients.push({ userId: req.userId, res });
-  console.error("Set up clients:", clients);
+  // console.error("Set up clients:", clients);
 
   req.on("close", () => {
     clients = clients.filter((client) => client.userId !== req.userId);
